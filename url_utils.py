@@ -33,9 +33,12 @@ def get_path_components(path):
         dictionary containing the parent and child of the path
     """
     if len(path) > 1:
+        c = os.path.split(path)[1]
+        if len(c) == 0:
+            c = "INDEX"
         return {
             "parent": os.path.join(os.path.split(path)[0], ""),
-            "child": os.path.split(path)[1],
+            "child": c,
         }
     else:
         p = os.path.split(path)[0]

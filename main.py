@@ -11,7 +11,8 @@ import url_utils
 from SitemapReader import SitemapReader
 
 height_adjustment = 0
-num_urls_to_grab = 3
+# Set num_urls_to_grab to a number if you want to limit the number of pages to parse
+num_urls_to_grab = None
 sitemap_url = os.environ.get("SITEMAP_URL")
 
 # Setup Jinja2
@@ -19,9 +20,13 @@ jinja_file_loader = FileSystemLoader("templates")
 jinja_env = Environment(loader=jinja_file_loader)
 
 sitemap = SitemapReader(sitemap_url)
-urls_to_grab = dict(
-    itertools.islice(sitemap.get_sitemap_data().items(), num_urls_to_grab)
-)
+
+if num_urls_to_grab:
+    urls_to_grab = dict(
+        itertools.islice(sitemap.get_sitemap_data().items(), num_urls_to_grab)
+    )
+else:
+    urls_to_grab = sitemap.get_sitemap_data()
 
 # Get the page template for Jinja
 page_template = jinja_env.get_template("page.html.j2")
@@ -66,6 +71,6 @@ for url, lastmod in urls_to_grab.items():
     # Output to HTML
     output_html_path = "%s%s.html" % (output_dir, res_path["child"])
     page_template.stream(
-        output_dir=res_path["parent"], child=res_path["child"], lastmod=lastmod
+        output_dir=res_path["parent"], child=res_path["child"], lastmod=lastmod, url=url
     ).dump(output_html_path)
     print("Created %s" % output_html_path)

@@ -50,9 +50,8 @@ class SitemapReader:
         soup = BeautifulSoup(self._retrieve_sitemap(), features="html.parser")
         sitemapTags = soup.find_all("url")
         for sitemap in sitemapTags:
-            self.sitemap_data[sitemap.findNext("loc").text] = sitemap.findNext(
-                "lastmod"
-            ).text
+            _lastmod = sitemap.lastmod.text if sitemap.lastmod else "UNKNOWN"
+            self.sitemap_data[sitemap.findNext("loc").text] = _lastmod
         return
 
     def __str__(self):

@@ -15,6 +15,8 @@ html {
   color: #222;
   font-size: 1em;
   line-height: 1.4;
+  font-family: "Roboto", sans-serif;
+  background-color: #ddd;
 }
 
 /*
@@ -63,6 +65,8 @@ img,
 svg,
 video {
   vertical-align: middle;
+  object-fit: fill;
+  max-width: 100%;
 }
 
 /*
@@ -86,6 +90,26 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+
+.mono {
+  font-family: "Roboto Mono", monospace;
+  display: inline;
+}
+
+.screenshot {
+  border: 3px solid #aaa;
+  margin: 10px;
+}
+
+#header {
+  background-color: #fff;
+  margin: 0px;
+  padding: 15px;
+}
+
+#main {
+  padding: 10px;
+}
 
 /* ==========================================================================
    Helper classes
@@ -260,4 +284,3 @@ textarea {
     page-break-after: avoid;
   }
 }
-
