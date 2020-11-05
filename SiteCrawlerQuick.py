@@ -60,6 +60,3 @@ class SiteCrawlerQuick:
         """
         self.results = await asyncio.gather(*[self.request(u) for u in self.urls])
         return self.results
-
-    def __str__():
-        return "urls: " + urls

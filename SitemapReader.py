@@ -57,13 +57,3 @@ class SitemapReader:
             "Number of resources found in Sitemap: %s" % len(self.sitemap_data)
         )
         return
-
-    def __str__(self):
-        """Representation of the class data."""
-        return (
-            "sitemap_url: "
-            + self.sitemap_url
-            + " , "
-            + "sitemap_data: "
-            + self.sitemap_data
-        )
