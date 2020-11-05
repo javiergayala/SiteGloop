@@ -78,7 +78,6 @@ class SiteCrawler:
                 S = lambda X: driver.execute_script(
                     "return document.body.parentNode.scroll" + X
                 )
-                # driver.set_window_size(S("Width"), S("Height") + height_adjustment)
                 driver.set_window_size(S("Width"), scroll_height)
                 driver.find_element_by_tag_name("body").screenshot(
                     "%s%s.png" % (self.output_dir, res_path["child"])
@@ -86,7 +85,7 @@ class SiteCrawler:
             finally:
                 try:
                     driver.close()
-                except:
+                except Exception:
                     pass
 
             # Output to HTML
@@ -148,19 +147,3 @@ class SiteCrawler:
             whether quick mode is enabled
         """
         return self.quick_mode
-
-    def __str__():
-        """Show the string representation of the class."""
-        return (
-            "urls: "
-            + urls
-            + " , "
-            + "output_dir: "
-            + output_dir
-            + "template_dir: "
-            + template_dir
-            + "page_template: "
-            + page_template
-            + "quick_mode: "
-            + quick_mode
-        )
