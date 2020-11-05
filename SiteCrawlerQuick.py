@@ -6,15 +6,18 @@ from logzero import logger
 
 
 class SiteCrawlerQuick:
-    def __init__(self, urls):
+    def __init__(self, urls=None, conn_limit=None):
         """Initialize the Quick Site Crawler.
 
         Parameters
         ----------
         urls : list
             list of URLs to crawl
+        conn_limit : int
+            maximum number of connections to use (default: 100)
         """
         self.urls = [] if urls is None else urls
+        self.conn_limit = 100 if conn_limit is None else conn_limit
         self.results = None
 
     def get_urls(self):
@@ -40,7 +43,8 @@ class SiteCrawlerQuick:
         dict
             URL and it's response code from the crawler
         """
-        async with aiohttp.ClientSession() as session:
+        connector = aiohttp.TCPConnector(limit=self.conn_limit)
+        async with aiohttp.ClientSession(connector=connector) as session:
             async with session.get(url) as resp:
                 logger.debug("Starting session for %s" % url)
                 await resp.text(encoding="utf-8")
