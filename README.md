@@ -32,8 +32,8 @@ pip install -r requirements.txt
 ### Help
 
 ```text
-python main.py -h
-usage: main.py [-h] [-s SITEMAP_URL] [-n NUM_URLS_TO_GRAB] [-o OUTPUT_DIR] [-p PAGE_TEMPLATE] [-t TEMPLATE_DIR] [-q] [-v] [--version]
+python sitegloop.py -h
+usage: sitegloop.py [-h] [-s SITEMAP_URL] [-n NUM_URLS_TO_GRAB] [-v] [--version] [-o OUTPUT_DIR] [-p PAGE_TEMPLATE] [-t TEMPLATE_DIR] [-q] [-ql QUICK_LIMIT]
 
 Crawls a Sitemap and creates snapshots of each page.  Alternatively,
 if used with the 'quick' option will simply crawl without saving
@@ -44,37 +44,51 @@ environment variable.
 
 optional arguments:
   -h, --help            show this help message and exit
+
+Universal Options:
+  These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.
+
   -s SITEMAP_URL, --sitemap-url SITEMAP_URL
                         URL to the Sitemap to parse
   -n NUM_URLS_TO_GRAB, --num-urls-to-grab NUM_URLS_TO_GRAB
                         Set this to a number that you want to use to limit the number of URLs to crawl
+  -v, --verbose         Verbosity (-v, -vv, etc)
+  --version             show program's version number and exit
+
+Crawl w/ Screenshots:
+  These options pertain to crawls in which each page is loaded, then a screenshot is created from a headless browser.
+
   -o OUTPUT_DIR, --output-dir OUTPUT_DIR
                         Path to the directory to store snapshots
   -p PAGE_TEMPLATE, --page-template PAGE_TEMPLATE
                         Name of the Jinja2 template for snapshots
   -t TEMPLATE_DIR, --template-dir TEMPLATE_DIR
                         Path to the directory where the Jinja2 templates are stored
+
+Quick Crawl w/o Screenshots:
+  These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.
+
   -q, --quick           Perform a quick crawl, without saving snapshots
-  -v, --verbose         Verbosity (-v, -vv, etc)
-  --version             show program's version number and exit
+  -ql QUICK_LIMIT, --quick-limit QUICK_LIMIT
+                        Maximum number of connections to allow at once (requires '-q')
 ```
 
 ### Normal Usage
 
 ```bash
-python main.py -s https://www.javierayala.com/sitemap.xml
+python sitegloop.py -s https://www.javierayala.com/sitemap.xml
 ```
 
 ### Usage w/ Environment Variables
 
 ```bash
-SITEMAP_URL=https://www.javierayala.com/sitemap.xml python main.py
+SITEMAP_URL=https://www.javierayala.com/sitemap.xml python sitegloop.py
 ```
 
 ### Usage w/ Quick Option
 
 ```bash
-python main.py -s https://www.javierayala.com/sitemap.xml -q
+python sitegloop.py -s https://www.javierayala.com/sitemap.xml -q
 ```
 
 ## Contributing

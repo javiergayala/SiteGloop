@@ -1,6 +1,7 @@
 """Read and parse through a sitemap and return the data."""
 import requests
 from bs4 import BeautifulSoup
+from logzero import logger
 
 
 class SitemapReader:
@@ -52,14 +53,7 @@ class SitemapReader:
         for sitemap in sitemapTags:
             _lastmod = sitemap.lastmod.text if sitemap.lastmod else "UNKNOWN"
             self.sitemap_data[sitemap.findNext("loc").text] = _lastmod
-        return
-
-    def __str__(self):
-        """Representation of the class data."""
-        return (
-            "sitemap_url: "
-            + self.sitemap_url
-            + " , "
-            + "sitemap_data: "
-            + self.sitemap_data
+        logger.debug(
+            "Number of resources found in Sitemap: %s" % len(self.sitemap_data)
         )
+        return
