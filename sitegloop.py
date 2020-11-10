@@ -153,11 +153,7 @@ if __name__ == "__main__":
 
     # Optional verbosity counter (eg. -v, -vv, -vvv, etc.)
     universal_group.add_argument(
-        "-v",
-        "--verbose",
-        action="count",
-        default=0,
-        help="Verbosity (-v, -vv, etc)",
+        "-v", "--verbose", action="count", default=0, help="Verbosity (-v, -vv, etc)",
     )
 
     # Specify output of "--version"
