@@ -2,35 +2,74 @@
 """Script to parse through a sitemap and take screenshots of the pages."""
 
 __author__ = "Javier Ayala"
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __license__ = "MIT"
 
 import argparse
+import asyncio
 import itertools
 import os
 import sys
 from time import sleep
 
+from colored import attr, bg, fg
 from logzero import logger
 
 import url_utils
 from SiteCrawler import SiteCrawler
 from SiteCrawlerQuick import SiteCrawlerQuick
-from SitemapReader import SitemapReader
+from SitemapReaderQuick import SitemapReaderQuick
 
 height_adjustment = 0
 # Set num_urls_to_grab to a number if you want to limit the number of pages to parse
 num_urls_to_grab = None
 
 
+def find_log_level(lvl=0):
+    """Parse and return a valid logging level from the verbose setting.
+
+    Parameters
+    ----------
+    lvl : int, optional
+        verbose level, by default 0
+
+    Returns
+    -------
+    int
+        Python Logging Level (see: https://docs.python.org/3/library/logging.html#logging-levels)
+    """
+    if lvl == 0:
+        return 50
+    elif lvl == 1:
+        return 40
+    elif lvl == 2:
+        return 30
+    elif lvl == 3:
+        return 20
+    else:
+        return 10
+
+
 def main(args):
-    """Entry point of the app."""
+    """Run Sitegloop on behalf of the user.
+
+    Parameters
+    ----------
+    args : ArgumentParser Namespace
+        object containing the attributes passed via the command line
+    """
     if args.sitemap_url is None:
         logger.error(
             "NO SITEMAP DEFINED! Must use '-s' option or SITEMAP_URL Environment Variable."
         )
         sys.exit(1)
-    sitemap = SitemapReader(args.sitemap_url)
+    sitemaploop = asyncio.get_event_loop()
+    sitemap = SitemapReaderQuick(
+        args.sitemap_url,
+        conn_limit=args.quick_limit,
+        verbosity=find_log_level(args.verbose),
+    )
+    sitemaploop.run_until_complete(sitemap.parse_sitemap())
 
     if args.num_urls_to_grab:
         urls_to_grab = dict(
@@ -40,8 +79,6 @@ def main(args):
         urls_to_grab = sitemap.get_sitemap_data()
 
     if args.quick:
-        import asyncio
-
         import aiohttp
 
         from SiteCrawlerQuick import SiteCrawlerQuick
@@ -51,9 +88,20 @@ def main(args):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(site_crawler.crawl_sites())
         logger.info("Results:\n\n")
+
+        print(
+            "\n\n%s%s%s Results of Site Crawl: %s\n"
+            % (attr("bold"), fg("white"), bg("green"), attr("reset"))
+        )
         for result in site_crawler.results:
             for url, status in result.items():
-                logger.info("%s : %s" % (url, status))
+                if int(status) < 300:
+                    status_color = fg("green")
+                elif int(status) < 400:
+                    status_color = fg("yellow")
+                else:
+                    status_color = "%s%s" % (attr("bold"), fg("red"))
+                print("%s : %s%s%s" % (url, status_color, status, attr("reset")))
     else:
         from selenium import webdriver
         from selenium.webdriver.firefox.options import Options
@@ -105,7 +153,7 @@ if __name__ == "__main__":
 
     # Optional verbosity counter (eg. -v, -vv, -vvv, etc.)
     universal_group.add_argument(
-        "-v", "--verbose", action="count", default=0, help="Verbosity (-v, -vv, etc)"
+        "-v", "--verbose", action="count", default=0, help="Verbosity (-v, -vv, etc)",
     )
 
     # Specify output of "--version"

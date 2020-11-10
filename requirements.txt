@@ -5,3 +5,6 @@ Jinja2
 logzero
 aiohttp
 asyncio
+progress
+colored
+black==19.10b0
