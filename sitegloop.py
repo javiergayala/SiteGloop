@@ -83,11 +83,15 @@ def main(args):
 
         from SiteCrawlerQuick import SiteCrawlerQuick
 
-        site_crawler = SiteCrawlerQuick(urls=urls_to_grab, conn_limit=args.quick_limit)
+        site_crawler = SiteCrawlerQuick(
+            urls=urls_to_grab,
+            target_loc=args.target_loc,
+            target_scheme=args.target_scheme,
+            conn_limit=args.quick_limit,
+        )
 
         loop = asyncio.get_event_loop()
         loop.run_until_complete(site_crawler.crawl_sites())
-        logger.info("Results:\n\n")
 
         print(
             "\n\n%s%s%s Results of Site Crawl: %s\n"
@@ -140,6 +144,28 @@ if __name__ == "__main__":
         action="store",
         default=os.environ.get("SITEMAP_URL"),
         help="URL to the Sitemap to parse",
+    )
+
+    universal_group.add_argument(
+        "-tl",
+        "--target-loc",
+        action="store",
+        default=None,
+        help=(
+            "Target Location to use when crawling, if you want to crawl a different \n"
+            "host from that defined within the sitemap."
+        ),
+    )
+
+    universal_group.add_argument(
+        "-ts",
+        "--target-scheme",
+        action="store",
+        default=None,
+        help=(
+            "Target Scheme (http or https) to use when crawling, if you want to use a \n"
+            "different scheme when crawling then what is defined within the sitemap."
+        ),
     )
 
     universal_group.add_argument(

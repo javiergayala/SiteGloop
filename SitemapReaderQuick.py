@@ -1,6 +1,7 @@
 """Read and parse through a sitemap and return the data."""
 import asyncio
 import logging
+import urllib.parse
 import xml
 
 import aiohttp
@@ -10,13 +11,23 @@ from colored import attr, bg, fg
 from logzero import logger
 from progress.spinner import Spinner
 
-from SitegloopErrors import NoConnectorError, SitemapUrlError
+from SiteGloopErrors import InvalidHostname, NoConnectorError, SitemapUrlError
+from SiteGloopUtils import SiteGloopLogger as GloopLog
+from SiteGloopUtils import is_fqdn
 
 
 class SitemapReaderQuick:
     """Quick Sitemap reader class."""
 
-    def __init__(self, sitemap_url, sitemap_data={}, conn_limit=None, verbosity=50):
+    def __init__(
+        self,
+        sitemap_url,
+        sitemap_data={},
+        conn_limit=None,
+        target_loc=None,
+        target_scheme=None,
+        verbosity=50,
+    ):
         """Initialize the Sitemap reader.
 
         Parameters
@@ -31,7 +42,7 @@ class SitemapReaderQuick:
             verbosity setting, by default 50 (see: https://docs.python.org/3/library/logging.html#logging-levels)
         """
         self.verbosity = verbosity
-        logzero.loglevel(self.verbosity)
+        self.glooplog = GloopLog(verbosity=self.verbosity)
         self.sitemap_url = sitemap_url
         self.sitemap_data = sitemap_data
         self.conn_limit = 100 if conn_limit is None else conn_limit
@@ -41,33 +52,7 @@ class SitemapReaderQuick:
         self.spinner = None
         self.found_sitemap_urls = [self.sitemap_url]
 
-    def _logger(self, level=None, msg=None, spin=False):
-        """Log message or iterate the spinner.
-
-        Parameters
-        ----------
-        level : str, optional
-            log level to use, by default None (choices: debug, info, warning, error, critical)
-        msg : str, optional
-            message to log, by default None
-        spin : bool, optional
-            True to spin the spinner, by default False
-        """
-        if level is None and spin and self.verbosity >= 30:
-            self.spinner.next()
-        elif level == "debug" and msg is not None:
-            logger.debug("%s" % msg)
-        elif level == "info" and msg is not None:
-            logger.info("%s" % msg)
-        elif level == "warning" and msg is not None:
-            logger.warning("%s" % msg)
-        elif level == "error" and msg is not None:
-            logger.error("%s" % msg)
-        elif level == "critical" and msg is not None:
-            logger.critical("%s" % msg)
-        return
-
-    def get_sitemap_url(self):
+    def get_sitemap_url(self) -> str:
         """Getter for the sitemap_url.
 
         Returns
@@ -77,7 +62,7 @@ class SitemapReaderQuick:
         """
         return self.sitemap_url
 
-    def get_sitemap_data(self):
+    def get_sitemap_data(self) -> dict:
         """Getter for the parsed sitemap data.
 
         Returns
@@ -93,8 +78,10 @@ class SitemapReaderQuick:
         if sitemap_url is None:
             raise SitemapUrlError
         async with session.get(sitemap_url) as resp:
-            self._logger(level="debug", msg="Starting session for %s" % sitemap_url)
-            self._logger(spin=True)
+            self.glooplog.logit(
+                level="debug", msg="Starting session for %s" % sitemap_url
+            )
+            self.glooplog.logit(spin=True)
             return await resp.text(encoding="utf-8")
 
     async def parse_sitemap(self):
@@ -103,7 +90,7 @@ class SitemapReaderQuick:
             "\n%s Beginning to parse sitemap(s)... %s\n" % (attr("bold"), attr("reset"))
         )
         if self.verbosity >= 30:
-            self.spinner = Spinner(" Loading ")
+            self.glooplog.spinner = Spinner(" Loading ")
         self.connector = aiohttp.TCPConnector(limit=self.conn_limit)
         async with aiohttp.ClientSession(connector=self.connector) as session:
             self.sitemap_data = {}
@@ -124,22 +111,22 @@ class SitemapReaderQuick:
                             if _sitemap_url not in self.found_sitemap_urls:
                                 self.found_sitemap_urls.append(_sitemap_url)
                                 self.queue.put_nowait(_sitemap_url)
-                                self._logger(
+                                self.glooplog.logit(
                                     level="debug",
                                     msg="New Sitemap Found: %s" % _sitemap_url,
                                 )
-                                self._logger(spin=True)
-                            self._logger(
+                                self.glooplog.logit(spin=True)
+                            self.glooplog.logit(
                                 level="debug",
                                 msg="Found sitemaps: %s" % self.queue.qsize(),
                             )
-                            self._logger(spin=True)
+                            self.glooplog.logit(spin=True)
                     if _soup.urlset is not None:
-                        self._logger(
+                        self.glooplog.logit(
                             level="debug",
                             msg="Sitemap Data Entries: %s" % len(self.sitemap_data),
                         )
-                        self._logger(spin=True)
+                        self.glooplog.logit(spin=True)
                         _urlset = _soup.urlset.find_all("url")
                         for _url in _urlset:
                             _url_text = _url.findNext("loc").text
@@ -148,17 +135,19 @@ class SitemapReaderQuick:
                                     _url.lastmod.text if _url.lastmod else "UNKNOWN"
                                 )
                                 self.sitemap_data[_url.findNext("loc").text] = _lastmod
-                                self._logger(level="debug", msg="Added %s" % _url_text)
-                                self._logger(spin=True)
+                                self.glooplog.logit(
+                                    level="debug", msg="Added %s" % _url_text
+                                )
+                                self.glooplog.logit(spin=True)
                             elif _url_text in self.sitemap_data:
-                                self._logger(
+                                self.glooplog.logit(
                                     level="debug",
                                     msg="Duplicate found. Sitemaps found: %s"
                                     % self.queue.qsize(),
                                 )
-                                self._logger(spin=True)
+                                self.glooplog.logit(spin=True)
                 self.queue.task_done()
-        self._logger(level="info", msg="Sitemap Reading Complete!")
+        self.glooplog.logit(level="info", msg="Sitemap Reading Complete!")
         print(
             "\n\n%s%s%s Sitemap Reading Complete! %s\n"
             % (attr("bold"), fg("white"), bg("green"), attr("reset"))
@@ -167,7 +156,7 @@ class SitemapReaderQuick:
 
     def print_stats(self):
         """Print out the number of URLs found in the sitemaps."""
-        self._logger(
+        self.glooplog.logit(
             level="info",
             msg="Number of URLs found in sitemaps: %s" % len(self.sitemap_data),
         )

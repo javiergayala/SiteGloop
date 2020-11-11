@@ -3,7 +3,7 @@ import requests
 import xml
 from bs4 import BeautifulSoup
 from logzero import logger
-from SitegloopErrors import SitemapUrlError
+from SiteGloopErrors import SitemapUrlError
 
 
 class SitemapReader:
