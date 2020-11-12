@@ -12,6 +12,30 @@ from SiteGloopErrors import InvalidHostname
 
 
 class SiteCrawlerQuick:
+    """Crawl the site in an asynchronous fashion.
+
+    Args:
+        urls (list): A list of URLs to crawl.
+        target_loc (:obj:`str`, *optional*): The location (hostname) to target if different from
+            that defined in the sitemap.
+        target_scheme (:obj:`str`, *optional*): The scheme (http/https) to use if different from that defined in
+            the sitemap.
+        conn_limit (:obj:`int`, *optional*): The maximum number of connections to use.
+        verbosity (:obj:`int`, *optional*): The verbosity setting for output.
+            (see: https://docs.python.org/3/library/logging.html#logging-levels)
+
+    Attributes:
+        urls (list): A list of URLs to crawl.
+        target_loc (str): The location (hostname) to target if different from
+            that defined in the sitemap.
+        target_scheme (str): The scheme (http/https) to use if different from that defined in
+            the sitemap.
+        conn_limit (int): The maximum number of connections to use.
+        verbosity (int): The verbosity setting for output.
+            (see: https://docs.python.org/3/library/logging.html#logging-levels)
+
+    """
+
     def __init__(
         self,
         urls=None,
@@ -22,18 +46,17 @@ class SiteCrawlerQuick:
     ):
         """Initialize the Quick Site Crawler.
 
-        Parameters
-        ----------
-        urls : list
-            list of URLs to crawl
-        target_loc : str, optional
-            location (hostname) to target if different (default: None)
-        target_scheme : str, optional
-            scheme to use on target if different from source (default: same as resource within the sitemap)
-        conn_limit : int
-            maximum number of connections to use (default: 100)
-        verbosity : int, optional
-            verbosity setting, by default 50 (see: https://docs.python.org/3/library/logging.html#logging-levels)
+        Args:
+            urls (list):
+                list of URLs to crawl
+            target_loc (str, *optional):
+                location (hostname) to target if different (default: None)
+            target_scheme (str, *optional*):
+                scheme to use on target if different from source (default: same as resource within the sitemap)
+            conn_limit (int, *optional*):
+                maximum number of connections to use (default: 100)
+            verbosity (int, *optional*):
+                verbosity setting, by default 50 (see: https://docs.python.org/3/library/logging.html#logging-levels)
         """
         self.verbosity = verbosity
         self.glooplog = GloopLog(verbosity=self.verbosity)
@@ -62,15 +85,13 @@ class SiteCrawlerQuick:
     def change_url_location(self, urls=[]) -> list:
         """Change the netloc in the URL to something user-defined.
 
-        Parameters
-        ----------
-        urls : list, optional
-            URLs that we want to change, by default []
+        Args:
+            urls (list, *optional*):
+                URLs that we want to change, by default []
 
-        Returns
-        -------
-        list
-            modified URLs
+        Returns:
+            list: A list of dictionaries containing modified URLs as their keys.
+
         """
         changed_urls = {}
         self.glooplog.spinner = Spinner("Replacing URLs with %s : " % self.target_loc)
@@ -100,24 +121,20 @@ class SiteCrawlerQuick:
         """Getter for the provided URLs.
 
         Returns
-        -------
-        list
-            list of urls provided to crawl
+            list: a list of dictionaries with URLs to crawl as their keys.
+
         """
         return self.urls
 
     async def request(self, url) -> dict:
         """Asynchronously request a URL from a web server.
 
-        Parameters
-        ----------
-        url : str
-            URL to be requested
+        Args:
+            url (str): The URL to be requested by the crawler.
 
-        Returns
-        -------
-        dict
-            URL and it's response code from the crawler
+        Returns:
+            dict: The URL as the key, and it's response code as the value from the crawler.
+
         """
         connector = aiohttp.TCPConnector(limit=self.conn_limit)
         async with aiohttp.ClientSession(connector=connector) as session:
@@ -130,10 +147,21 @@ class SiteCrawlerQuick:
     async def crawl_sites(self) -> list:
         """Asynchronously crawl a list of URLs.
 
-        Returns
-        -------
-        list
-            list of dictionaries containing URLs crawled and their response codes
+        Return:
+            list: A list of dictionaries containing URLs crawled as their key and their response codes
+                as the value:
+
+            Example::
+
+                [
+                    {
+                        'https://www.javierayala.com/page1': 200
+                    },
+                    {
+                        'https://www.javierayala.com/page2': 200
+                    }
+                ]
+
         """
         self.results = await asyncio.gather(*[self.request(u) for u in self.urls])
         return self.results

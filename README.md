@@ -1,3 +1,5 @@
+<div style="text-align:center"><img src="SiteGloop_25.png" /></div>
+
 # Site Gloop
 
 ## Description
