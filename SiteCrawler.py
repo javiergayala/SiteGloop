@@ -18,7 +18,7 @@ class SiteCrawler:
         output_dir=None,
         template_dir=None,
         page_template=None,
-        quick_mode=None,
+        mode=None,
     ):
         """Initialize the SiteCrawler class.
 
@@ -32,8 +32,8 @@ class SiteCrawler:
             directory containing Jinja2 templates, by default "templates"
         page_template : str, optional
             name of the Jinja2 template to use for snapshots, by default "page.html.j2"
-        quick_mode : bool, optional
-            set to "True" to use quick mode (no snapshots saved)
+        mode : str, optional
+            set to "quick" to use quick mode (no snapshots saved)
         """
         self.urls = [] if urls is None else urls
         self.output_dir = (
@@ -42,7 +42,7 @@ class SiteCrawler:
         logger.debug("self.output_dir: %s" % self.output_dir)
         self.template_dir = "templates" if template_dir is None else template_dir
         self.page_template = "page.html.j2" if page_template is None else page_template
-        self.quick_mode = False if quick_mode is None else quick_mode
+        self.mode = "quick" if mode is None else mode
         # logger.debug("template_dir: %s" % self.template_dir)
         self.jinja_file_loader = FileSystemLoader(self.template_dir)
         # logger.debug("jinja_file_loader: %s" % self.jinja_file_loader)
@@ -98,7 +98,7 @@ class SiteCrawler:
             ).dump(output_html_path)
             logger.info("Created %s" % output_html_path)
 
-    def get_urls(self):
+    def get_urls(self) -> list:
         """Get URLs contained in the class.
 
         Returns
@@ -108,7 +108,7 @@ class SiteCrawler:
         """
         return self.urls
 
-    def get_output_dir(self):
+    def get_output_dir(self) -> str:
         """Get the name of the output directory.
 
         Returns
@@ -118,7 +118,7 @@ class SiteCrawler:
         """
         return self.output_dir
 
-    def get_template_dir(self):
+    def get_template_dir(self) -> str:
         """Get the name of the directory containing the Jinja2 templates.
 
         Returns
@@ -128,7 +128,7 @@ class SiteCrawler:
         """
         return self.template_dir
 
-    def get_page_template(self):
+    def get_page_template(self) -> str:
         """Get the name of the Jinja2 page template for snapshots
 
         Returns
@@ -138,12 +138,12 @@ class SiteCrawler:
         """
         return self.page_template
 
-    def get_quick_mode(self):
+    def get_mode(self) -> str:
         """Get the setting of quick mode.
 
         Returns
         -------
-        bool
+        str
             whether quick mode is enabled
         """
-        return self.quick_mode
+        return self.mode

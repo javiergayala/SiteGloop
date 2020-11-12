@@ -78,7 +78,7 @@ def main(args):
     else:
         urls_to_grab = sitemap.get_sitemap_data()
 
-    if args.quick:
+    if args.mode == "quick":
         import aiohttp
 
         from SiteCrawlerQuick import SiteCrawlerQuick
@@ -115,16 +115,17 @@ def main(args):
             output_dir=args.output_dir,
             template_dir=args.template_dir,
             page_template=args.page_template,
-            quick_mode=args.quick,
+            mode=args.mode,
         )
 
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
     description = (
-        "Crawls a Sitemap and creates snapshots of each page.  Alternatively,\n"
-        "if used with the 'quick' option will simply crawl without saving \n"
-        "snapshots. This can be useful to warm the cache on a site.\n\n"
+        "Crawls a Sitemap and performs a quick asynchronous crawl of the resources contained \n"
+        "within the sitemap.  This can be useful for warming the site's cache.  Alternatively,\n"
+        "if used with the 'screenshot' option will simply crawl synchronously, saving \n"
+        "snapshots of each page.\n\n"
         "You can also set the Sitemap URL by setting the 'SITEMAP_URL'\n"
         "environment variable."
     )
@@ -135,6 +136,15 @@ if __name__ == "__main__":
     universal_group = parser.add_argument_group(
         "Universal Options",
         "These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.",
+    )
+
+    universal_group.add_argument(
+        "-m",
+        "--mode",
+        action="store",
+        choices=["quick", "screenshot"],
+        default="quick",
+        help="Which mode you want to invoke, a 'quick' async crawl or a synchronous 'screenshot' capture",
     )
 
     # Optional argument flag which defaults to False
@@ -224,13 +234,6 @@ if __name__ == "__main__":
     quick_group = parser.add_argument_group(
         "Quick Crawl w/o Screenshots",
         "These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.",
-    )
-
-    quick_group.add_argument(
-        "-q",
-        "--quick",
-        action="store_true",
-        help="Perform a quick crawl, without saving snapshots",
     )
 
     quick_group.add_argument(
