@@ -2,9 +2,13 @@
 
 # Site Gloop
 
+## Full Documentation
+
+You can find full documentation, including API documentation, at https://javiergayala.github.io/SiteGloop/.
+
 ## Description
 
-Site Gloop is a script that I created to solve a couple of needs that I have pertaining to crawling websites:
+SiteGloop is a script that I created to solve a couple of needs that I have pertaining to crawling websites:
 
 - Crawl with a Snapshot
 - Quick Crawl
@@ -30,7 +34,7 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-
+f
 ### Help
 
 ```text
