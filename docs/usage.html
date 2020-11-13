@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usage &#8212; SiteGloop v0.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/better.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="SiteGloop API" href="API/index.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style type="text/css">img.logo { width: 100%; }</style>
+  </head><body>
+    <header id="pageheader"><h1><a href="index.html ">
+        SiteGloop v0.2.0 documentation
+    </a></h1></header>
+  <div class="related top">
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="install.html" title="Previous document">Installation</a>
+        </li>
+        <li>
+          <a href="API/index.html" title="Next document">SiteGloop API</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="index.html">Home</a></li> 
+    </ul>
+  </nav>
+  </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="help">
+<h3>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">h</span>
+
+<span class="n">usage</span><span class="p">:</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="p">{</span><span class="n">quick</span><span class="p">,</span><span class="n">screenshot</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SITEMAP_URL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">tl</span> <span class="n">TARGET_LOC</span><span class="p">]</span>
+                    <span class="p">[</span><span class="o">-</span><span class="n">ts</span> <span class="n">TARGET_SCHEME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span> <span class="n">NUM_URLS_TO_GRAB</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">version</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT_DIR</span><span class="p">]</span>
+                    <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PAGE_TEMPLATE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">TEMPLATE_DIR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ql</span> <span class="n">QUICK_LIMIT</span><span class="p">]</span>
+
+<span class="n">Crawls</span> <span class="n">a</span> <span class="n">Sitemap</span> <span class="ow">and</span> <span class="n">performs</span> <span class="n">a</span> <span class="n">quick</span> <span class="n">asynchronous</span> <span class="n">crawl</span> <span class="n">of</span> <span class="n">the</span> <span class="n">resources</span> <span class="n">contained</span>
+<span class="n">within</span> <span class="n">the</span> <span class="n">sitemap</span><span class="o">.</span>  <span class="n">This</span> <span class="n">can</span> <span class="n">be</span> <span class="n">useful</span> <span class="k">for</span> <span class="n">warming</span> <span class="n">the</span> <span class="n">site</span><span class="s1">&#39;s cache.  Alternatively,</span>
+<span class="k">if</span> <span class="n">used</span> <span class="k">with</span> <span class="n">the</span> <span class="s1">&#39;screenshot&#39;</span> <span class="n">option</span> <span class="n">will</span> <span class="n">simply</span> <span class="n">crawl</span> <span class="n">synchronously</span><span class="p">,</span> <span class="n">saving</span>
+<span class="n">snapshots</span> <span class="n">of</span> <span class="n">each</span> <span class="n">page</span><span class="o">.</span>
+
+<span class="n">You</span> <span class="n">can</span> <span class="n">also</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">Sitemap</span> <span class="n">URL</span> <span class="n">by</span> <span class="n">setting</span> <span class="n">the</span> <span class="s1">&#39;SITEMAP_URL&#39;</span>
+<span class="n">environment</span> <span class="n">variable</span><span class="o">.</span>
+
+<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
+  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+
+<span class="n">Universal</span> <span class="n">Options</span><span class="p">:</span>
+  <span class="n">These</span> <span class="n">are</span> <span class="n">universal</span> <span class="n">options</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">whether</span> <span class="n">doing</span> <span class="n">a</span> <span class="n">normal</span><span class="o">/</span><span class="n">screenshot</span> <span class="n">crawl</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">quick</span> <span class="n">crawl</span><span class="o">.</span>
+
+  <span class="o">-</span><span class="n">m</span> <span class="p">{</span><span class="n">quick</span><span class="p">,</span><span class="n">screenshot</span><span class="p">},</span> <span class="o">--</span><span class="n">mode</span> <span class="p">{</span><span class="n">quick</span><span class="p">,</span><span class="n">screenshot</span><span class="p">}</span>
+                        <span class="n">Which</span> <span class="n">mode</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">invoke</span><span class="p">,</span> <span class="n">a</span> <span class="s1">&#39;quick&#39;</span> <span class="k">async</span> <span class="n">crawl</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">synchronous</span>
+                        <span class="s1">&#39;screenshot&#39;</span> <span class="n">capture</span>
+  <span class="o">-</span><span class="n">s</span> <span class="n">SITEMAP_URL</span><span class="p">,</span> <span class="o">--</span><span class="n">sitemap</span><span class="o">-</span><span class="n">url</span> <span class="n">SITEMAP_URL</span>
+                        <span class="n">URL</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Sitemap</span> <span class="n">to</span> <span class="n">parse</span>
+  <span class="o">-</span><span class="n">tl</span> <span class="n">TARGET_LOC</span><span class="p">,</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">loc</span> <span class="n">TARGET_LOC</span>
+                        <span class="n">Target</span> <span class="n">Location</span> <span class="n">to</span> <span class="n">use</span> <span class="n">when</span> <span class="n">crawling</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">crawl</span> <span class="n">a</span> <span class="n">different</span>
+                        <span class="n">host</span> <span class="kn">from</span> <span class="nn">that</span> <span class="n">defined</span> <span class="n">within</span> <span class="n">the</span> <span class="n">sitemap</span><span class="o">.</span>
+  <span class="o">-</span><span class="n">ts</span> <span class="n">TARGET_SCHEME</span><span class="p">,</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">scheme</span> <span class="n">TARGET_SCHEME</span>
+                        <span class="n">Target</span> <span class="n">Scheme</span> <span class="p">(</span><span class="n">http</span> <span class="ow">or</span> <span class="n">https</span><span class="p">)</span> <span class="n">to</span> <span class="n">use</span> <span class="n">when</span> <span class="n">crawling</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">use</span>
+                        <span class="n">a</span> <span class="n">different</span> <span class="n">scheme</span> <span class="n">when</span> <span class="n">crawling</span> <span class="n">then</span> <span class="n">what</span> <span class="ow">is</span> <span class="n">defined</span> <span class="n">within</span> <span class="n">the</span>
+                        <span class="n">sitemap</span><span class="o">.</span>
+  <span class="o">-</span><span class="n">n</span> <span class="n">NUM_URLS_TO_GRAB</span><span class="p">,</span> <span class="o">--</span><span class="n">num</span><span class="o">-</span><span class="n">urls</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">grab</span> <span class="n">NUM_URLS_TO_GRAB</span>
+                        <span class="n">Set</span> <span class="n">this</span> <span class="n">to</span> <span class="n">a</span> <span class="n">number</span> <span class="n">that</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">use</span> <span class="n">to</span> <span class="n">limit</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">URLs</span>
+                        <span class="n">to</span> <span class="n">crawl</span>
+  <span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">--</span><span class="n">verbose</span>         <span class="n">Verbosity</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">vv</span><span class="p">,</span> <span class="n">etc</span><span class="p">)</span>
+  <span class="o">--</span><span class="n">version</span>             <span class="n">show</span> <span class="n">program</span><span class="s1">&#39;s version number and exit</span>
+
+<span class="n">Crawl</span> <span class="n">w</span><span class="o">/</span> <span class="n">Screenshots</span><span class="p">:</span>
+  <span class="n">These</span> <span class="n">options</span> <span class="n">pertain</span> <span class="n">to</span> <span class="n">crawls</span> <span class="ow">in</span> <span class="n">which</span> <span class="n">each</span> <span class="n">page</span> <span class="ow">is</span> <span class="n">loaded</span><span class="p">,</span> <span class="n">then</span> <span class="n">a</span> <span class="n">screenshot</span> <span class="ow">is</span> <span class="n">created</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">headless</span> <span class="n">browser</span><span class="o">.</span>
+
+  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="nb">dir</span> <span class="n">OUTPUT_DIR</span>
+                        <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">to</span> <span class="n">store</span> <span class="n">snapshots</span>
+  <span class="o">-</span><span class="n">p</span> <span class="n">PAGE_TEMPLATE</span><span class="p">,</span> <span class="o">--</span><span class="n">page</span><span class="o">-</span><span class="n">template</span> <span class="n">PAGE_TEMPLATE</span>
+                        <span class="n">Name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Jinja2</span> <span class="n">template</span> <span class="k">for</span> <span class="n">snapshots</span>
+  <span class="o">-</span><span class="n">t</span> <span class="n">TEMPLATE_DIR</span><span class="p">,</span> <span class="o">--</span><span class="n">template</span><span class="o">-</span><span class="nb">dir</span> <span class="n">TEMPLATE_DIR</span>
+                        <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">where</span> <span class="n">the</span> <span class="n">Jinja2</span> <span class="n">templates</span> <span class="n">are</span> <span class="n">stored</span>
+
+<span class="n">Quick</span> <span class="n">Crawl</span> <span class="n">w</span><span class="o">/</span><span class="n">o</span> <span class="n">Screenshots</span><span class="p">:</span>
+  <span class="n">These</span> <span class="n">options</span> <span class="n">pertain</span> <span class="n">to</span> <span class="n">quick</span> <span class="n">crawls</span> <span class="ow">in</span> <span class="n">which</span> <span class="n">screenshots</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">created</span><span class="p">,</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">links</span> <span class="n">are</span> <span class="n">visited</span> <span class="n">asynchronously</span><span class="o">.</span>
+
+  <span class="o">-</span><span class="n">ql</span> <span class="n">QUICK_LIMIT</span><span class="p">,</span> <span class="o">--</span><span class="n">quick</span><span class="o">-</span><span class="n">limit</span> <span class="n">QUICK_LIMIT</span>
+                        <span class="n">Maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">connections</span> <span class="n">to</span> <span class="n">allow</span> <span class="n">at</span> <span class="n">once</span> <span class="p">(</span><span class="n">requires</span> <span class="s1">&#39;-q&#39;</span><span class="p">)</span> <span class="n">Default</span> <span class="ow">is</span> <span class="mf">100.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="cli-examples">
+<h2>CLI Examples<a class="headerlink" href="#cli-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="normal-usage">
+<h3>Normal Usage<a class="headerlink" href="#normal-usage" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; python sitegloop.py -s https://www.javierayala.com/sitemap.xml
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage-w-environment-variables">
+<h3>Usage w/ Environment Variables<a class="headerlink" href="#usage-w-environment-variables" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">SITEMAP_URL</span><span class="o">=</span>https://www.javierayala.com/sitemap.xml python sitegloop.py
+</pre></div>
+</div>
+</div>
+<div class="section" id="usage-w-screenshot-option">
+<h3>Usage w/ Screenshot Option<a class="headerlink" href="#usage-w-screenshot-option" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; python sitegloop.py -m screenshot -s https://www.javierayala.com/sitemap.xml
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="API/index.html"><span class="doc">API</span></a></p>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/SiteGloop_25.png" alt="Logo"/>
+            </a></p>
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API/index.html">SiteGloop API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sitegloop.html">sitegloop.py CLI module</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="install.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="API/index.html"
+                        title="next chapter">SiteGloop API</a></p>
+<form class="search" action="search.html" method="get">
+  <input type="text" name="q"
+   placeholder="type to search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="related bottom">
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="install.html" title="Previous document">Installation</a>
+        </li>
+        <li>
+          <a href="API/index.html" title="Next document">SiteGloop API</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="index.html">Home</a></li> 
+    </ul>
+  </nav>
+  </div>
+  <footer id="pagefooter">&copy; 2020, Javier Ayala.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a>
+      3.3.0
+        with the <a href="http://github.com/irskep/sphinx-better-theme">
+          better</a> theme.
+
+  </footer>
+
+  
+  </body>
+</html>

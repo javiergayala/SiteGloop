@@ -4,6 +4,8 @@
 output/**/*.html
 output/**/*.png
 
+docsrc/_build/*
+
 .vscode/
 
 # Byte-compiled / optimized / DLL files
