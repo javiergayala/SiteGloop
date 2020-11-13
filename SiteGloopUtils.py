@@ -7,15 +7,13 @@ from logzero import logger
 def is_fqdn(hostname: str) -> bool:
     """Check for a valid hostname.
 
-    Parameters
-    ----------
-    hostname : str
-        hostname to validate
+    Args:
+        hostname (str):
+            hostname to validate
 
-    Returns
-    -------
-    bool
-        True if it's a valid hostname
+    Returns:
+        bool: True if it's a valid hostname
+
     """
     if not 1 < len(hostname) < 253:
         return False
@@ -38,7 +36,17 @@ def is_fqdn(hostname: str) -> bool:
 
 
 class SiteGloopLogger:
-    """Logger for SiteGloop."""
+    """Logger for SiteGloop.
+
+    Args:
+        verbosity (:obj:`str`, optional): Human readable string describing the log level to use
+        spinner (:obj:`obj`, optional): Object containing the progress spinner to use
+
+    Attributes:
+        verbosity (str): Human readable string describing the log level to use
+        spinner (obj): Object containing the progress spinner to use
+
+    """
 
     def __init__(self, verbosity=50, spinner=None):
         """Create the logger.
@@ -57,14 +65,16 @@ class SiteGloopLogger:
     def logit(self, level=None, msg=None, spin=False):
         """Log message or iterate the spinner.
 
-        Parameters
-        ----------
-        level : str, optional
-            log level to use, by default None (choices: debug, info, warning, error, critical)
-        msg : str, optional
-            message to log, by default None
-        spin : bool, optional
-            True to spin the spinner, by default False
+        Args:
+            level (:obj:`str`, optional):
+                log level to use, by default None (choices: debug, info, warning, error, critical)
+            msg (:obj:`str`, optional):
+                message to log, by default None
+            spin (:obj:`bool`, optional):
+                True to spin the spinner, by default False
+        Returns:
+            bool: True if successful
+
         """
         if level is None and self.spinner and spin and self.verbosity >= 30:
             self.spinner.next()
@@ -78,4 +88,4 @@ class SiteGloopLogger:
             logger.error("%s" % msg)
         elif level == "critical" and msg is not None:
             logger.critical("%s" % msg)
-        return
+        return True

@@ -7,40 +7,48 @@ from SiteGloopErrors import SitemapUrlError
 
 
 class SitemapReader:
-    """Sitemap reader class."""
+    """Sitemap reader class.
 
-    def __init__(self, sitemap_url, sitemap_data={}):
+    Args:
+        sitemap_url (str): URL to the primary sitemap
+        sitemap_data (:obj:`dict`, optional): Data from a parsed sitemap, by default ``{}``
+
+    Attributes:
+        sitemap_url (str): URL to the primary sitemap
+        sitemap_data (dict): Data from a parsed sitemap, by default ``{}``
+
+    """
+
+    def __init__(self, sitemap_url, sitemap_data={}) -> None:
         """Initialize the Sitemap reader.
 
-        Parameters
-        ----------
-        sitemap_url : str
-            URL to the sitemap
-        sitemap_data : dict, optional
-            data from a parsed sitemap, by default {}
+        Args:
+            sitemap_url (str):
+                URL to the sitemap
+            sitemap_data (:obj:`dict`, optional):
+                data from a parsed sitemap, by default ``{}``
+
         """
         self.sitemap_url = sitemap_url
         self.sitemap_data = sitemap_data
         self.found_sitemap_urls = [self.sitemap_url]
         self.parse_sitemap()
 
-    def get_sitemap_url(self):
+    def get_sitemap_url(self) -> str:
         """Getter for the sitemap_url.
 
-        Returns
-        -------
-        str
-            URL to the sitemap
+        Returns:
+            str: URL to the sitemap
+
         """
         return self.sitemap_url
 
-    def get_sitemap_data(self):
+    def get_sitemap_data(self) -> dict:
         """Getter for the parsed sitemap data.
 
-        Returns
-        -------
-        dict
-            provides the "url" and "lastmod" data from the sitemap
+        Returns:
+            dict: The URL crawled is the key, and the "lastmod" data taken
+                from the sitemap is the value
         """
         return self.sitemap_data
 
@@ -50,8 +58,13 @@ class SitemapReader:
         r = requests.get(sitemap_url, parser)
         return r.text
 
-    def parse_sitemap(self):
-        """Process the data within the sitemap."""
+    def parse_sitemap(self) -> bool:
+        """Process the data within the sitemap.
+
+        Returns:
+            bool: True if sitemap was successfully parsed
+
+        """
         self.sitemap_data = {}
         while len(self.found_sitemap_urls) > 0:
             _soup = None
@@ -71,19 +84,9 @@ class SitemapReader:
                 for _url in _urlset:
                     _lastmod = _url.lastmod.text if _url.lastmod else "UNKNOWN"
                     self.sitemap_data[_url.findNext("loc").text] = _lastmod
-        return
+        return True
 
-    def print_stats(self):
+    def print_stats(self) -> None:
+        """Print the number of URLs found in the sitemaps."""
         logger.debug("Number of URLs found in sitemaps: %s" % len(self.sitemap_data))
         return
-
-    # def parse_sitemap_urlset(self, urlset=None):
-    #     soup = BeautifulSoup(urlset, "xml")
-    #     sitemapTags = soup.find_all("url")
-    #     for sitemap in sitemapTags:
-    #         _lastmod = sitemap.lastmod.text if sitemap.lastmod else "UNKNOWN"
-    #         self.sitemap_data[sitemap.findNext("loc").text] = _lastmod
-    #     logger.debug(
-    #         "Number of resources found in Sitemap: %s" % len(self.sitemap_data)
-    #     )
-    #     return

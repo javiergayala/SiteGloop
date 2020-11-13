@@ -7,4 +7,3 @@ aiohttp
 asyncio
 progress
 colored
-black==19.10b0

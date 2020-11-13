@@ -17,7 +17,25 @@ from SiteGloopUtils import is_fqdn
 
 
 class SitemapReaderQuick:
-    """Quick Sitemap reader class."""
+    """Sitemap reader that uses asynchronous communications for fast functionality.
+
+    Args:
+      sitemap_url (str): URL to the sitemap
+      sitemap_data (:obj:`dict`, optional): data from a parsed sitemap (default: ``{}``)
+      conn_limit (:obj:`int`, optional): maximum number of connections to use at once (default: ``100``)
+      verbosity (:obj:`int`, optional): verbosity setting (default: ``50``)
+
+    Attributes:
+      sitemap_url (str): URL to the sitemap
+      sitemap_data (dict): data from a parsed sitemap
+      conn_limit (int): maximum number of connections to use at once
+      verbosity (int): verbosity setting
+
+    Note:
+        See https://docs.python.org/3/library/logging.html#logging-levels for more information on using
+        the ``verbosity`` setting.
+
+    """
 
     def __init__(
         self,
@@ -55,20 +73,18 @@ class SitemapReaderQuick:
     def get_sitemap_url(self) -> str:
         """Getter for the sitemap_url.
 
-        Returns
-        -------
-        str
-            URL to the sitemap
+        Returns:
+            str: URL to the sitemap
+
         """
         return self.sitemap_url
 
     def get_sitemap_data(self) -> dict:
         """Getter for the parsed sitemap data.
 
-        Returns
-        -------
-        dict
-            provides the "url" and "lastmod" data from the sitemap
+        Returns:
+            dict: provides the URL and ``lastmod`` data from the sitemap
+
         """
         return self.sitemap_data
 
@@ -154,7 +170,7 @@ class SitemapReaderQuick:
         )
         return
 
-    def print_stats(self):
+    def print_stats(self) -> None:
         """Print out the number of URLs found in the sitemaps."""
         self.glooplog.logit(
             level="info",
