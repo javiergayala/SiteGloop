@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SitemapReader module &#8212; SiteGloop v0.2.0 documentation</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/better.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="SitemapReaderQuick module" href="SitemapReaderQuick.html" />
+    <link rel="prev" title="SiteGloopUtils module" href="SiteGloopUtils.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style type="text/css">img.logo { width: 100%; }</style>
+  </head><body>
+    <header id="pageheader"><h1><a href="../index.html ">
+        SiteGloop v0.2.0 documentation
+    </a></h1></header>
+  <div class="related top">
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="SiteGloopUtils.html" title="Previous document">SiteGloopUtils module</a>
+        </li>
+        <li>
+          <a href="SitemapReaderQuick.html" title="Next document">SitemapReaderQuick module</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li>
+        <a href="index.html">SiteGloop API</a>
+      </li> 
+    </ul>
+  </nav>
+  </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-SitemapReader">
+<span id="sitemapreader-module"></span><h1>SitemapReader module<a class="headerlink" href="#module-SitemapReader" title="Permalink to this headline">¶</a></h1>
+<p>Read and parse through a sitemap and return the data.</p>
+<dl class="py class">
+<dt id="SitemapReader.SitemapReader">
+<em class="property">class </em><code class="sig-prename descclassname">SitemapReader.</code><code class="sig-name descname">SitemapReader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sitemap_url</span></em>, <em class="sig-param"><span class="n">sitemap_data</span><span class="o">=</span><span class="default_value">{}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SitemapReader.SitemapReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sitemap reader class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sitemap_url</strong> (<em>str</em>) – URL to the primary sitemap</p></li>
+<li><p><strong>sitemap_data</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>, optional) – Data from a parsed sitemap, by default <code class="docutils literal notranslate"><span class="pre">{}</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="SitemapReader.SitemapReader.sitemap_url">
+<code class="sig-name descname">sitemap_url</code><a class="headerlink" href="#SitemapReader.SitemapReader.sitemap_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL to the primary sitemap</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="SitemapReader.SitemapReader.sitemap_data">
+<code class="sig-name descname">sitemap_data</code><a class="headerlink" href="#SitemapReader.SitemapReader.sitemap_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data from a parsed sitemap, by default <code class="docutils literal notranslate"><span class="pre">{}</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SitemapReader.SitemapReader.get_sitemap_data">
+<code class="sig-name descname">get_sitemap_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#SitemapReader.SitemapReader.get_sitemap_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the parsed sitemap data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>The URL crawled is the key, and the “lastmod” data taken</dt><dd><p>from the sitemap is the value</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SitemapReader.SitemapReader.get_sitemap_url">
+<code class="sig-name descname">get_sitemap_url</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#SitemapReader.SitemapReader.get_sitemap_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter for the sitemap_url.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>URL to the sitemap</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SitemapReader.SitemapReader.parse_sitemap">
+<code class="sig-name descname">parse_sitemap</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#SitemapReader.SitemapReader.parse_sitemap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the data within the sitemap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if sitemap was successfully parsed</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="SitemapReader.SitemapReader.print_stats">
+<code class="sig-name descname">print_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#SitemapReader.SitemapReader.print_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the number of URLs found in the sitemaps.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/SiteGloop_25.png" alt="Logo"/>
+            </a></p>
+<h3><a href="../index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">SiteGloop API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sitegloop.html">sitegloop.py CLI module</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SiteGloopUtils.html"
+                        title="previous chapter">SiteGloopUtils module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SitemapReaderQuick.html"
+                        title="next chapter">SitemapReaderQuick module</a></p>
+<form class="search" action="../search.html" method="get">
+  <input type="text" name="q"
+   placeholder="type to search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="related bottom">
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="SiteGloopUtils.html" title="Previous document">SiteGloopUtils module</a>
+        </li>
+        <li>
+          <a href="SitemapReaderQuick.html" title="Next document">SitemapReaderQuick module</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li>
+        <a href="index.html">SiteGloop API</a>
+      </li> 
+    </ul>
+  </nav>
+  </div>
+  <footer id="pagefooter">&copy; 2020, Javier Ayala.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a>
+      3.3.0
+        with the <a href="http://github.com/irskep/sphinx-better-theme">
+          better</a> theme.
+
+  </footer>
+
+  
+  </body>
+</html>

@@ -1,5 +1,55 @@
 #!/usr/bin/env python3
-"""Script to parse through a sitemap and take screenshots of the pages."""
+"""Script to parse through a sitemap and take screenshots of the pages.
+
+.. code-block:: console
+
+    usage: sitegloop.py [-h] [-m {quick,screenshot}] [-s SITEMAP_URL] [-tl TARGET_LOC] [-ts TARGET_SCHEME] [-n NUM_URLS_TO_GRAB] [-v] [--version] [-o OUTPUT_DIR] [-p PAGE_TEMPLATE] [-t TEMPLATE_DIR]
+                        [-ql QUICK_LIMIT]
+
+    Crawls a Sitemap and performs a quick asynchronous crawl of the resources contained
+    within the sitemap.  This can be useful for warming the site's cache.  Alternatively,
+    if used with the 'screenshot' option will simply crawl synchronously, saving
+    snapshots of each page.
+
+    You can also set the Sitemap URL by setting the 'SITEMAP_URL'
+    environment variable.
+
+    optional arguments:
+    -h, --help            show this help message and exit
+
+    Universal Options:
+    These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.
+
+    -m {quick,screenshot}, --mode {quick,screenshot}
+                            Which mode you want to invoke, a 'quick' async crawl or a synchronous 'screenshot' capture
+    -s SITEMAP_URL, --sitemap-url SITEMAP_URL
+                            URL to the Sitemap to parse
+    -tl TARGET_LOC, --target-loc TARGET_LOC
+                            Target Location to use when crawling, if you want to crawl a different host from that defined within the sitemap.
+    -ts TARGET_SCHEME, --target-scheme TARGET_SCHEME
+                            Target Scheme (http or https) to use when crawling, if you want to use a different scheme when crawling then what is defined within the sitemap.
+    -n NUM_URLS_TO_GRAB, --num-urls-to-grab NUM_URLS_TO_GRAB
+                            Set this to a number that you want to use to limit the number of URLs to crawl
+    -v, --verbose         Verbosity (-v, -vv, etc)
+    --version             show program's version number and exit
+
+    Crawl w/ Screenshots:
+    These options pertain to crawls in which each page is loaded, then a screenshot is created from a headless browser.
+
+    -o OUTPUT_DIR, --output-dir OUTPUT_DIR
+                            Path to the directory to store snapshots
+    -p PAGE_TEMPLATE, --page-template PAGE_TEMPLATE
+                            Name of the Jinja2 template for snapshots
+    -t TEMPLATE_DIR, --template-dir TEMPLATE_DIR
+                            Path to the directory where the Jinja2 templates are stored
+
+    Quick Crawl w/o Screenshots:
+    These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.
+
+    -ql QUICK_LIMIT, --quick-limit QUICK_LIMIT
+                            Maximum number of connections to allow at once (requires '-q') Default is 100.
+
+"""
 
 __author__ = "Javier Ayala"
 __version__ = "0.2.0"
@@ -78,16 +128,20 @@ def main(args):
     else:
         urls_to_grab = sitemap.get_sitemap_data()
 
-    if args.quick:
+    if args.mode == "quick":
         import aiohttp
 
         from SiteCrawlerQuick import SiteCrawlerQuick
 
-        site_crawler = SiteCrawlerQuick(urls=urls_to_grab, conn_limit=args.quick_limit)
+        site_crawler = SiteCrawlerQuick(
+            urls=urls_to_grab,
+            target_loc=args.target_loc,
+            target_scheme=args.target_scheme,
+            conn_limit=args.quick_limit,
+        )
 
         loop = asyncio.get_event_loop()
         loop.run_until_complete(site_crawler.crawl_sites())
-        logger.info("Results:\n\n")
 
         print(
             "\n\n%s%s%s Results of Site Crawl: %s\n"
@@ -111,16 +165,17 @@ def main(args):
             output_dir=args.output_dir,
             template_dir=args.template_dir,
             page_template=args.page_template,
-            quick_mode=args.quick,
+            mode=args.mode,
         )
 
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
     description = (
-        "Crawls a Sitemap and creates snapshots of each page.  Alternatively,\n"
-        "if used with the 'quick' option will simply crawl without saving \n"
-        "snapshots. This can be useful to warm the cache on a site.\n\n"
+        "Crawls a Sitemap and performs a quick asynchronous crawl of the resources contained \n"
+        "within the sitemap.  This can be useful for warming the site's cache.  Alternatively,\n"
+        "if used with the 'screenshot' option will simply crawl synchronously, saving \n"
+        "snapshots of each page.\n\n"
         "You can also set the Sitemap URL by setting the 'SITEMAP_URL'\n"
         "environment variable."
     )
@@ -133,6 +188,15 @@ if __name__ == "__main__":
         "These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.",
     )
 
+    universal_group.add_argument(
+        "-m",
+        "--mode",
+        action="store",
+        choices=["quick", "screenshot"],
+        default="quick",
+        help="Which mode you want to invoke, a 'quick' async crawl or a synchronous 'screenshot' capture",
+    )
+
     # Optional argument flag which defaults to False
     universal_group.add_argument(
         "-s",
@@ -140,6 +204,28 @@ if __name__ == "__main__":
         action="store",
         default=os.environ.get("SITEMAP_URL"),
         help="URL to the Sitemap to parse",
+    )
+
+    universal_group.add_argument(
+        "-tl",
+        "--target-loc",
+        action="store",
+        default=None,
+        help=(
+            "Target Location to use when crawling, if you want to crawl a different \n"
+            "host from that defined within the sitemap."
+        ),
+    )
+
+    universal_group.add_argument(
+        "-ts",
+        "--target-scheme",
+        action="store",
+        default=None,
+        help=(
+            "Target Scheme (http or https) to use when crawling, if you want to use a \n"
+            "different scheme when crawling then what is defined within the sitemap."
+        ),
     )
 
     universal_group.add_argument(
@@ -198,13 +284,6 @@ if __name__ == "__main__":
     quick_group = parser.add_argument_group(
         "Quick Crawl w/o Screenshots",
         "These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.",
-    )
-
-    quick_group.add_argument(
-        "-q",
-        "--quick",
-        action="store_true",
-        help="Perform a quick crawl, without saving snapshots",
     )
 
     quick_group.add_argument(

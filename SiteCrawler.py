@@ -10,7 +10,17 @@ import url_utils
 
 
 class SiteCrawler:
-    """Crawl the site and save snapshots if instructed to."""
+    """Crawl the site and save snapshots if instructed to.
+
+    :param urls: list of URLs to crawl
+    :type urls: list
+    :param output_dir: directory to output snapshots (default: "output")
+    :type output_dir: str
+    :param template_dir: directory to containing Jinja2 templates (default: "templates")
+    :type template_dir: str
+    :param mode: crawler mode: quick or snapshot (default: "quick")
+    :type mode: str
+    """
 
     def __init__(
         self,
@@ -18,22 +28,18 @@ class SiteCrawler:
         output_dir=None,
         template_dir=None,
         page_template=None,
-        quick_mode=None,
+        mode=None,
     ):
         """Initialize the SiteCrawler class.
 
-        Parameters
-        ----------
-        urls : list, optional
-            list of URLs to crawl, by default []
-        output_dir : str, optional
-            directory to output snapshots, by default "output"
-        template_dir : str, optional
-            directory containing Jinja2 templates, by default "templates"
-        page_template : str, optional
-            name of the Jinja2 template to use for snapshots, by default "page.html.j2"
-        quick_mode : bool, optional
-            set to "True" to use quick mode (no snapshots saved)
+        :param urls: list of URLs to crawl
+        :type urls: list
+        :param output_dir: directory to output snapshots (default: "output")
+        :type output_dir: str
+        :param template_dir: directory to containing Jinja2 templates (default: "templates")
+        :type template_dir: str
+        :param mode: crawler mode: quick or snapshot (default: "quick")
+        :type mode: str
         """
         self.urls = [] if urls is None else urls
         self.output_dir = (
@@ -42,7 +48,7 @@ class SiteCrawler:
         logger.debug("self.output_dir: %s" % self.output_dir)
         self.template_dir = "templates" if template_dir is None else template_dir
         self.page_template = "page.html.j2" if page_template is None else page_template
-        self.quick_mode = False if quick_mode is None else quick_mode
+        self.mode = "quick" if mode is None else mode
         # logger.debug("template_dir: %s" % self.template_dir)
         self.jinja_file_loader = FileSystemLoader(self.template_dir)
         # logger.debug("jinja_file_loader: %s" % self.jinja_file_loader)
@@ -98,52 +104,42 @@ class SiteCrawler:
             ).dump(output_html_path)
             logger.info("Created %s" % output_html_path)
 
-    def get_urls(self):
+    def get_urls(self) -> list:
         """Get URLs contained in the class.
 
-        Returns
-        -------
-        list
-            list of URLs
+        :return: list of URLs contained within the `urls` attribute
+        :rtype: list
         """
         return self.urls
 
-    def get_output_dir(self):
+    def get_output_dir(self) -> str:
         """Get the name of the output directory.
 
-        Returns
-        -------
-        str
-            name of the output directory
+        :return: name of the output directory
+        :rtype: str
         """
         return self.output_dir
 
-    def get_template_dir(self):
+    def get_template_dir(self) -> str:
         """Get the name of the directory containing the Jinja2 templates.
 
-        Returns
-        -------
-        str
-            name of the templates directory
+        :return: name of the directory containing the Jinja2 templates for screenshots
+        :rtype: str
         """
         return self.template_dir
 
-    def get_page_template(self):
-        """Get the name of the Jinja2 page template for snapshots
+    def get_page_template(self) -> str:
+        """Get the name of the Jinja2 page template for snapshots.
 
-        Returns
-        -------
-        str
-            name of the Jinja2 page template
+        :return: name of the Jinja2 "page" template
+        :rtype: str
         """
         return self.page_template
 
-    def get_quick_mode(self):
+    def get_mode(self) -> str:
         """Get the setting of quick mode.
 
-        Returns
-        -------
-        bool
-            whether quick mode is enabled
+        :return: type of crawl configured for use
+        :rtype: str
         """
-        return self.quick_mode
+        return self.mode

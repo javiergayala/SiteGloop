@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sitegloop module &#8212; SiteGloop v0.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/better.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="url_utils module" href="API/url_utils.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style type="text/css">img.logo { width: 100%; }</style>
+  </head><body>
+    <header id="pageheader"><h1><a href="index.html ">
+        SiteGloop v0.2.0 documentation
+    </a></h1></header>
+  <div class="related top">
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="API/url_utils.html" title="Previous document">url_utils module</a>
+        </li>
+    </ul>
+  </nav>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="index.html">Home</a></li> 
+    </ul>
+  </nav>
+  </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sitegloop">
+<span id="sitegloop-module"></span><h1>sitegloop module<a class="headerlink" href="#module-sitegloop" title="Permalink to this headline">¶</a></h1>
+<p>Script to parse through a sitemap and take screenshots of the pages.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usage: sitegloop.py [-h] [-m {quick,screenshot}] [-s SITEMAP_URL] [-tl TARGET_LOC] [-ts TARGET_SCHEME] [-n NUM_URLS_TO_GRAB] [-v] [--version] [-o OUTPUT_DIR] [-p PAGE_TEMPLATE] [-t TEMPLATE_DIR]</span>
+<span class="go">                    [-ql QUICK_LIMIT]</span>
+
+<span class="go">Crawls a Sitemap and performs a quick asynchronous crawl of the resources contained</span>
+<span class="go">within the sitemap.  This can be useful for warming the site&#39;s cache.  Alternatively,</span>
+<span class="go">if used with the &#39;screenshot&#39; option will simply crawl synchronously, saving</span>
+<span class="go">snapshots of each page.</span>
+
+<span class="go">You can also set the Sitemap URL by setting the &#39;SITEMAP_URL&#39;</span>
+<span class="go">environment variable.</span>
+
+<span class="go">optional arguments:</span>
+<span class="go">-h, --help            show this help message and exit</span>
+
+<span class="go">Universal Options:</span>
+<span class="go">These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.</span>
+
+<span class="go">-m {quick,screenshot}, --mode {quick,screenshot}</span>
+<span class="go">                        Which mode you want to invoke, a &#39;quick&#39; async crawl or a synchronous &#39;screenshot&#39; capture</span>
+<span class="go">-s SITEMAP_URL, --sitemap-url SITEMAP_URL</span>
+<span class="go">                        URL to the Sitemap to parse</span>
+<span class="go">-tl TARGET_LOC, --target-loc TARGET_LOC</span>
+<span class="go">                        Target Location to use when crawling, if you want to crawl a different host from that defined within the sitemap.</span>
+<span class="go">-ts TARGET_SCHEME, --target-scheme TARGET_SCHEME</span>
+<span class="go">                        Target Scheme (http or https) to use when crawling, if you want to use a different scheme when crawling then what is defined within the sitemap.</span>
+<span class="go">-n NUM_URLS_TO_GRAB, --num-urls-to-grab NUM_URLS_TO_GRAB</span>
+<span class="go">                        Set this to a number that you want to use to limit the number of URLs to crawl</span>
+<span class="go">-v, --verbose         Verbosity (-v, -vv, etc)</span>
+<span class="go">--version             show program&#39;s version number and exit</span>
+
+<span class="go">Crawl w/ Screenshots:</span>
+<span class="go">These options pertain to crawls in which each page is loaded, then a screenshot is created from a headless browser.</span>
+
+<span class="go">-o OUTPUT_DIR, --output-dir OUTPUT_DIR</span>
+<span class="go">                        Path to the directory to store snapshots</span>
+<span class="go">-p PAGE_TEMPLATE, --page-template PAGE_TEMPLATE</span>
+<span class="go">                        Name of the Jinja2 template for snapshots</span>
+<span class="go">-t TEMPLATE_DIR, --template-dir TEMPLATE_DIR</span>
+<span class="go">                        Path to the directory where the Jinja2 templates are stored</span>
+
+<span class="go">Quick Crawl w/o Screenshots:</span>
+<span class="go">These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.</span>
+
+<span class="go">-ql QUICK_LIMIT, --quick-limit QUICK_LIMIT</span>
+<span class="go">                        Maximum number of connections to allow at once (requires &#39;-q&#39;) Default is 100.</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt id="sitegloop.find_log_level">
+<code class="sig-prename descclassname">sitegloop.</code><code class="sig-name descname">find_log_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lvl</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sitegloop.find_log_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse and return a valid logging level from the verbose setting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lvl</strong> (<em>int</em><em>, </em><em>optional</em>) – verbose level, by default 0</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Python Logging Level (see: <a class="reference external" href="https://docs.python.org/3/library/logging.html#logging-levels">https://docs.python.org/3/library/logging.html#logging-levels</a>)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="sitegloop.main">
+<code class="sig-prename descclassname">sitegloop.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#sitegloop.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run Sitegloop on behalf of the user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>ArgumentParser Namespace</em>) – object containing the attributes passed via the command line</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/SiteGloop_25.png" alt="Logo"/>
+            </a></p>
+<h3><a href="index.html">Table of Contents</a></h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API/index.html">SiteGloop API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sitegloop.py CLI module</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="API/url_utils.html"
+                        title="previous chapter">url_utils module</a></p>
+<form class="search" action="search.html" method="get">
+  <input type="text" name="q"
+   placeholder="type to search" />
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="related bottom">
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="API/url_utils.html" title="Previous document">url_utils module</a>
+        </li>
+    </ul>
+  </nav>
+  <nav id="breadcrumbs">
+    <ul>
+      <li><a href="index.html">Home</a></li> 
+    </ul>
+  </nav>
+  </div>
+  <footer id="pagefooter">&copy; 2020, Javier Ayala.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a>
+      3.3.0
+        with the <a href="http://github.com/irskep/sphinx-better-theme">
+          better</a> theme.
+
+  </footer>
+
+  
+  </body>
+</html>
