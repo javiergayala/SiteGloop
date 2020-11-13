@@ -33,11 +33,15 @@ pip install -r requirements.txt
 
 ```text
 python sitegloop.py -h
-usage: sitegloop.py [-h] [-s SITEMAP_URL] [-n NUM_URLS_TO_GRAB] [-v] [--version] [-o OUTPUT_DIR] [-p PAGE_TEMPLATE] [-t TEMPLATE_DIR] [-q] [-ql QUICK_LIMIT]
 
-Crawls a Sitemap and creates snapshots of each page.  Alternatively,
-if used with the 'quick' option will simply crawl without saving
-snapshots. This can be useful to warm the cache on a site.
+usage: sitegloop.py [-h] [-m {quick,screenshot}] [-s SITEMAP_URL] [-tl TARGET_LOC]
+                    [-ts TARGET_SCHEME] [-n NUM_URLS_TO_GRAB] [-v] [--version] [-o OUTPUT_DIR]
+                    [-p PAGE_TEMPLATE] [-t TEMPLATE_DIR] [-ql QUICK_LIMIT]
+
+Crawls a Sitemap and performs a quick asynchronous crawl of the resources contained
+within the sitemap.  This can be useful for warming the site's cache.  Alternatively,
+if used with the 'screenshot' option will simply crawl synchronously, saving
+snapshots of each page.
 
 You can also set the Sitemap URL by setting the 'SITEMAP_URL'
 environment variable.
@@ -48,10 +52,21 @@ optional arguments:
 Universal Options:
   These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.
 
+  -m {quick,screenshot}, --mode {quick,screenshot}
+                        Which mode you want to invoke, a 'quick' async crawl or a synchronous
+                        'screenshot' capture
   -s SITEMAP_URL, --sitemap-url SITEMAP_URL
                         URL to the Sitemap to parse
+  -tl TARGET_LOC, --target-loc TARGET_LOC
+                        Target Location to use when crawling, if you want to crawl a different
+                        host from that defined within the sitemap.
+  -ts TARGET_SCHEME, --target-scheme TARGET_SCHEME
+                        Target Scheme (http or https) to use when crawling, if you want to use
+                        a different scheme when crawling then what is defined within the
+                        sitemap.
   -n NUM_URLS_TO_GRAB, --num-urls-to-grab NUM_URLS_TO_GRAB
-                        Set this to a number that you want to use to limit the number of URLs to crawl
+                        Set this to a number that you want to use to limit the number of URLs
+                        to crawl
   -v, --verbose         Verbosity (-v, -vv, etc)
   --version             show program's version number and exit
 
@@ -68,9 +83,8 @@ Crawl w/ Screenshots:
 Quick Crawl w/o Screenshots:
   These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.
 
-  -q, --quick           Perform a quick crawl, without saving snapshots
   -ql QUICK_LIMIT, --quick-limit QUICK_LIMIT
-                        Maximum number of connections to allow at once (requires '-q')
+                        Maximum number of connections to allow at once (requires '-q') Default is 100.
 ```
 
 ### Normal Usage
@@ -85,10 +99,10 @@ python sitegloop.py -s https://www.javierayala.com/sitemap.xml
 SITEMAP_URL=https://www.javierayala.com/sitemap.xml python sitegloop.py
 ```
 
-### Usage w/ Quick Option
+### Usage w/ Screenshot Option
 
 ```bash
-python sitegloop.py -s https://www.javierayala.com/sitemap.xml -q
+python sitegloop.py -m screenshot -s https://www.javierayala.com/sitemap.xml
 ```
 
 ## Contributing
