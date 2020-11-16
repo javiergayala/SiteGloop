@@ -35,8 +35,6 @@ pip install -r requirements.txt
 
 ## Usage
 
-f
-
 ### Help
 
 ```text
@@ -121,7 +119,7 @@ Please make sure to update tests as appropriate.
 
 ## Releases
 
-This project uses [tbump](https://github.com/tankerhq/tbump) for release versioning. To release a new version, make sure that you are on the master branch then run the following:
+This project uses [tbump](https://github.com/tankerhq/tbump) for release versioning. To release a new version, make sure that you are on the `main` branch then run the following where `REL_VER` is set to the new SemVer-based version number:
 
 ```bash
 REL_VER=0.2.3 tbump ${REL_VER}
