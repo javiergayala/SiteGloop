@@ -1,5 +1,7 @@
 """Various utilities for use by SiteGloop."""
 import re
+import sys
+
 import logzero
 from logzero import logger
 
@@ -88,4 +90,5 @@ class SiteGloopLogger:
             logger.error("%s" % msg)
         elif level == "critical" and msg is not None:
             logger.critical("%s" % msg)
+        sys.stdout.flush()
         return True
