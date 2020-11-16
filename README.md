@@ -34,7 +34,9 @@ pip install -r requirements.txt
 ```
 
 ## Usage
+
 f
+
 ### Help
 
 ```text
@@ -116,6 +118,14 @@ python sitegloop.py -m screenshot -s https://www.javierayala.com/sitemap.xml
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+## Releases
+
+This project uses [tbump](https://github.com/tankerhq/tbump) for release versioning. To release a new version, make sure that you are on the master branch then run the following:
+
+```bash
+REL_VER=0.2.3 tbump ${REL_VER}
+```
 
 ## Author
 
