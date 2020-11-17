@@ -2,5 +2,6 @@
 black==19.10b0
 sphinx
 recommonmark
-sphinx-better-theme
 tbump
+sphinxcontrib-programoutput
+sphinxcontrib-srclinks

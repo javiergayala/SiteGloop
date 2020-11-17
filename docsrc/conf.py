@@ -37,6 +37,8 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "recommonmark",
+    "sphinxcontrib.programoutput",
+    "sphinxcontrib.srclinks",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -47,16 +49,21 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+# -- srclink settings --------------------------------------------------------
+srclink_project = "https://github.com/javiergayala/SiteGloop"
+srclink_src_path = "docsrc/"
+srclink_branch = "main"
+
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 
-html_theme_path = [better_theme_path]
+# html_theme_path = [better_theme_path]
 #
-# html_theme = "classic"
-html_theme = "better"
+html_theme = "alabaster"
+# html_theme = "better"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -65,11 +72,26 @@ html_static_path = ["_static"]
 
 html_logo = "../SiteGloop_25.png"
 
-html_sidebars = {
-    "**": ["globaltoc.html", "relations.html", "searchbox.html"],
+html_theme_options = {
+    "logo": "../SiteGloop_25.png",
+    "github_user": "javiergayala",
+    "github_repo": "SiteGloop",
+    "github_banner": True,
+    "github_button": True,
+    "show_related": True,
+    "show_relbars": True,
 }
 
-html_theme_options = {"inlinecss": "img.logo { width: 100%; }"}
+# html_sidebars = {
+#     "**": ["globaltoc.html", "relations.html", "searchbox.html", "srclinks.html"],
+# }
+
+html_sidebars = {
+    "**": ["localtoc.html", "relations.html", "searchbox.html", "srclinks.html"],
+    "index": ["globaltoc.html", "relations.html", "searchbox.html", "srclinks.html"],
+}
+
+# html_theme_options = {"inlinecss": "img.logo { width: 100%; }"}
 
 html_short_title = "Home"
 
