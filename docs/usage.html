@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Usage &#8212; SiteGloop v0.2.3 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/better.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
@@ -17,13 +17,20 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="SiteGloop API" href="API/index.html" />
     <link rel="prev" title="Installation" href="install.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <style type="text/css">img.logo { width: 100%; }</style>
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head><body>
-    <header id="pageheader"><h1><a href="index.html ">
-        SiteGloop v0.2.3 documentation
-    </a></h1></header>
-  <div class="related top">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+              <div class="related top">
+                &nbsp;
   <nav id="rellinks">
     <ul>
         <li>
@@ -36,111 +43,112 @@
         </li>
     </ul>
   </nav>
-  <nav id="breadcrumbs">
-    <ul>
-      <li><a href="index.html">Home</a></li> 
-    </ul>
-  </nav>
-  </div>  
+              </div>
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           <div class="body" role="main">
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="cli">
 <h2>CLI<a class="headerlink" href="#cli" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="help">
-<h3>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">h</span>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>usage: sitegloop.py [-h] [-m {quick,screenshot}] [-s SITEMAP_URL]
+                    [-tl TARGET_LOC] [-ts TARGET_SCHEME] [-n NUM_URLS_TO_GRAB]
+                    [-v] [--version] [-o OUTPUT_DIR] [-p PAGE_TEMPLATE]
+                    [-t TEMPLATE_DIR] [-ql QUICK_LIMIT]
 
-<span class="n">usage</span><span class="p">:</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span> <span class="p">{</span><span class="n">quick</span><span class="p">,</span><span class="n">screenshot</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span> <span class="n">SITEMAP_URL</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">tl</span> <span class="n">TARGET_LOC</span><span class="p">]</span>
-                    <span class="p">[</span><span class="o">-</span><span class="n">ts</span> <span class="n">TARGET_SCHEME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span> <span class="n">NUM_URLS_TO_GRAB</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">version</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT_DIR</span><span class="p">]</span>
-                    <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PAGE_TEMPLATE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">TEMPLATE_DIR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">ql</span> <span class="n">QUICK_LIMIT</span><span class="p">]</span>
+Crawls a Sitemap and performs a quick asynchronous crawl of the resources contained 
+within the sitemap.  This can be useful for warming the site&#39;s cache.  Alternatively,
+if used with the &#39;screenshot&#39; option will simply crawl synchronously, saving 
+snapshots of each page.
 
-<span class="n">Crawls</span> <span class="n">a</span> <span class="n">Sitemap</span> <span class="ow">and</span> <span class="n">performs</span> <span class="n">a</span> <span class="n">quick</span> <span class="n">asynchronous</span> <span class="n">crawl</span> <span class="n">of</span> <span class="n">the</span> <span class="n">resources</span> <span class="n">contained</span>
-<span class="n">within</span> <span class="n">the</span> <span class="n">sitemap</span><span class="o">.</span>  <span class="n">This</span> <span class="n">can</span> <span class="n">be</span> <span class="n">useful</span> <span class="k">for</span> <span class="n">warming</span> <span class="n">the</span> <span class="n">site</span><span class="s1">&#39;s cache.  Alternatively,</span>
-<span class="k">if</span> <span class="n">used</span> <span class="k">with</span> <span class="n">the</span> <span class="s1">&#39;screenshot&#39;</span> <span class="n">option</span> <span class="n">will</span> <span class="n">simply</span> <span class="n">crawl</span> <span class="n">synchronously</span><span class="p">,</span> <span class="n">saving</span>
-<span class="n">snapshots</span> <span class="n">of</span> <span class="n">each</span> <span class="n">page</span><span class="o">.</span>
+You can also set the Sitemap URL by setting the &#39;SITEMAP_URL&#39;
+environment variable.
 
-<span class="n">You</span> <span class="n">can</span> <span class="n">also</span> <span class="nb">set</span> <span class="n">the</span> <span class="n">Sitemap</span> <span class="n">URL</span> <span class="n">by</span> <span class="n">setting</span> <span class="n">the</span> <span class="s1">&#39;SITEMAP_URL&#39;</span>
-<span class="n">environment</span> <span class="n">variable</span><span class="o">.</span>
+optional arguments:
+  -h, --help            show this help message and exit
 
-<span class="n">optional</span> <span class="n">arguments</span><span class="p">:</span>
-  <span class="o">-</span><span class="n">h</span><span class="p">,</span> <span class="o">--</span><span class="n">help</span>            <span class="n">show</span> <span class="n">this</span> <span class="n">help</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">exit</span>
+Universal Options:
+  These are universal options that can be used whether doing a normal/screenshot crawl or a quick crawl.
 
-<span class="n">Universal</span> <span class="n">Options</span><span class="p">:</span>
-  <span class="n">These</span> <span class="n">are</span> <span class="n">universal</span> <span class="n">options</span> <span class="n">that</span> <span class="n">can</span> <span class="n">be</span> <span class="n">used</span> <span class="n">whether</span> <span class="n">doing</span> <span class="n">a</span> <span class="n">normal</span><span class="o">/</span><span class="n">screenshot</span> <span class="n">crawl</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">quick</span> <span class="n">crawl</span><span class="o">.</span>
+  -m {quick,screenshot}, --mode {quick,screenshot}
+                        Which mode you want to invoke, a &#39;quick&#39; async crawl
+                        or a synchronous &#39;screenshot&#39; capture
+  -s SITEMAP_URL, --sitemap-url SITEMAP_URL
+                        URL to the Sitemap to parse
+  -tl TARGET_LOC, --target-loc TARGET_LOC
+                        Target Location to use when crawling, if you want to
+                        crawl a different host from that defined within the
+                        sitemap.
+  -ts TARGET_SCHEME, --target-scheme TARGET_SCHEME
+                        Target Scheme (http or https) to use when crawling, if
+                        you want to use a different scheme when crawling then
+                        what is defined within the sitemap.
+  -n NUM_URLS_TO_GRAB, --num-urls-to-grab NUM_URLS_TO_GRAB
+                        Set this to a number that you want to use to limit the
+                        number of URLs to crawl
+  -v, --verbose         Verbosity (-v, -vv, etc)
+  --version             show program&#39;s version number and exit
 
-  <span class="o">-</span><span class="n">m</span> <span class="p">{</span><span class="n">quick</span><span class="p">,</span><span class="n">screenshot</span><span class="p">},</span> <span class="o">--</span><span class="n">mode</span> <span class="p">{</span><span class="n">quick</span><span class="p">,</span><span class="n">screenshot</span><span class="p">}</span>
-                        <span class="n">Which</span> <span class="n">mode</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">invoke</span><span class="p">,</span> <span class="n">a</span> <span class="s1">&#39;quick&#39;</span> <span class="k">async</span> <span class="n">crawl</span> <span class="ow">or</span> <span class="n">a</span> <span class="n">synchronous</span>
-                        <span class="s1">&#39;screenshot&#39;</span> <span class="n">capture</span>
-  <span class="o">-</span><span class="n">s</span> <span class="n">SITEMAP_URL</span><span class="p">,</span> <span class="o">--</span><span class="n">sitemap</span><span class="o">-</span><span class="n">url</span> <span class="n">SITEMAP_URL</span>
-                        <span class="n">URL</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Sitemap</span> <span class="n">to</span> <span class="n">parse</span>
-  <span class="o">-</span><span class="n">tl</span> <span class="n">TARGET_LOC</span><span class="p">,</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">loc</span> <span class="n">TARGET_LOC</span>
-                        <span class="n">Target</span> <span class="n">Location</span> <span class="n">to</span> <span class="n">use</span> <span class="n">when</span> <span class="n">crawling</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">crawl</span> <span class="n">a</span> <span class="n">different</span>
-                        <span class="n">host</span> <span class="kn">from</span> <span class="nn">that</span> <span class="n">defined</span> <span class="n">within</span> <span class="n">the</span> <span class="n">sitemap</span><span class="o">.</span>
-  <span class="o">-</span><span class="n">ts</span> <span class="n">TARGET_SCHEME</span><span class="p">,</span> <span class="o">--</span><span class="n">target</span><span class="o">-</span><span class="n">scheme</span> <span class="n">TARGET_SCHEME</span>
-                        <span class="n">Target</span> <span class="n">Scheme</span> <span class="p">(</span><span class="n">http</span> <span class="ow">or</span> <span class="n">https</span><span class="p">)</span> <span class="n">to</span> <span class="n">use</span> <span class="n">when</span> <span class="n">crawling</span><span class="p">,</span> <span class="k">if</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">use</span>
-                        <span class="n">a</span> <span class="n">different</span> <span class="n">scheme</span> <span class="n">when</span> <span class="n">crawling</span> <span class="n">then</span> <span class="n">what</span> <span class="ow">is</span> <span class="n">defined</span> <span class="n">within</span> <span class="n">the</span>
-                        <span class="n">sitemap</span><span class="o">.</span>
-  <span class="o">-</span><span class="n">n</span> <span class="n">NUM_URLS_TO_GRAB</span><span class="p">,</span> <span class="o">--</span><span class="n">num</span><span class="o">-</span><span class="n">urls</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">grab</span> <span class="n">NUM_URLS_TO_GRAB</span>
-                        <span class="n">Set</span> <span class="n">this</span> <span class="n">to</span> <span class="n">a</span> <span class="n">number</span> <span class="n">that</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">use</span> <span class="n">to</span> <span class="n">limit</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">URLs</span>
-                        <span class="n">to</span> <span class="n">crawl</span>
-  <span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">--</span><span class="n">verbose</span>         <span class="n">Verbosity</span> <span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">vv</span><span class="p">,</span> <span class="n">etc</span><span class="p">)</span>
-  <span class="o">--</span><span class="n">version</span>             <span class="n">show</span> <span class="n">program</span><span class="s1">&#39;s version number and exit</span>
+Crawl w/ Screenshots:
+  These options pertain to crawls in which each page is loaded, then a screenshot is created from a headless browser.
 
-<span class="n">Crawl</span> <span class="n">w</span><span class="o">/</span> <span class="n">Screenshots</span><span class="p">:</span>
-  <span class="n">These</span> <span class="n">options</span> <span class="n">pertain</span> <span class="n">to</span> <span class="n">crawls</span> <span class="ow">in</span> <span class="n">which</span> <span class="n">each</span> <span class="n">page</span> <span class="ow">is</span> <span class="n">loaded</span><span class="p">,</span> <span class="n">then</span> <span class="n">a</span> <span class="n">screenshot</span> <span class="ow">is</span> <span class="n">created</span> <span class="kn">from</span> <span class="nn">a</span> <span class="n">headless</span> <span class="n">browser</span><span class="o">.</span>
+  -o OUTPUT_DIR, --output-dir OUTPUT_DIR
+                        Path to the directory to store snapshots
+  -p PAGE_TEMPLATE, --page-template PAGE_TEMPLATE
+                        Name of the Jinja2 template for snapshots
+  -t TEMPLATE_DIR, --template-dir TEMPLATE_DIR
+                        Path to the directory where the Jinja2 templates are
+                        stored
 
-  <span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="o">--</span><span class="n">output</span><span class="o">-</span><span class="nb">dir</span> <span class="n">OUTPUT_DIR</span>
-                        <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">to</span> <span class="n">store</span> <span class="n">snapshots</span>
-  <span class="o">-</span><span class="n">p</span> <span class="n">PAGE_TEMPLATE</span><span class="p">,</span> <span class="o">--</span><span class="n">page</span><span class="o">-</span><span class="n">template</span> <span class="n">PAGE_TEMPLATE</span>
-                        <span class="n">Name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Jinja2</span> <span class="n">template</span> <span class="k">for</span> <span class="n">snapshots</span>
-  <span class="o">-</span><span class="n">t</span> <span class="n">TEMPLATE_DIR</span><span class="p">,</span> <span class="o">--</span><span class="n">template</span><span class="o">-</span><span class="nb">dir</span> <span class="n">TEMPLATE_DIR</span>
-                        <span class="n">Path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">directory</span> <span class="n">where</span> <span class="n">the</span> <span class="n">Jinja2</span> <span class="n">templates</span> <span class="n">are</span> <span class="n">stored</span>
+Quick Crawl w/o Screenshots:
+  These options pertain to quick crawls in which screenshots are not created, and the links are visited asynchronously.
 
-<span class="n">Quick</span> <span class="n">Crawl</span> <span class="n">w</span><span class="o">/</span><span class="n">o</span> <span class="n">Screenshots</span><span class="p">:</span>
-  <span class="n">These</span> <span class="n">options</span> <span class="n">pertain</span> <span class="n">to</span> <span class="n">quick</span> <span class="n">crawls</span> <span class="ow">in</span> <span class="n">which</span> <span class="n">screenshots</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">created</span><span class="p">,</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">links</span> <span class="n">are</span> <span class="n">visited</span> <span class="n">asynchronously</span><span class="o">.</span>
-
-  <span class="o">-</span><span class="n">ql</span> <span class="n">QUICK_LIMIT</span><span class="p">,</span> <span class="o">--</span><span class="n">quick</span><span class="o">-</span><span class="n">limit</span> <span class="n">QUICK_LIMIT</span>
-                        <span class="n">Maximum</span> <span class="n">number</span> <span class="n">of</span> <span class="n">connections</span> <span class="n">to</span> <span class="n">allow</span> <span class="n">at</span> <span class="n">once</span> <span class="p">(</span><span class="n">requires</span> <span class="s1">&#39;-q&#39;</span><span class="p">)</span> <span class="n">Default</span> <span class="ow">is</span> <span class="mf">100.</span>
+  -ql QUICK_LIMIT, --quick-limit QUICK_LIMIT
+                        Maximum number of connections to allow at once
+                        (requires &#39;-q&#39;) Default is 100.
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="cli-examples">
 <h2>CLI Examples<a class="headerlink" href="#cli-examples" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="normal-usage">
-<h3>Normal Usage<a class="headerlink" href="#normal-usage" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; python sitegloop.py -s https://www.javierayala.com/sitemap.xml
+<p><strong>Normal Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">javierayala</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sitemap</span><span class="o">.</span><span class="n">xml</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage-w-environment-variables">
-<h3>Usage w/ Environment Variables<a class="headerlink" href="#usage-w-environment-variables" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; <span class="nv">SITEMAP_URL</span><span class="o">=</span>https://www.javierayala.com/sitemap.xml python sitegloop.py
+<p><strong>Usage w/ Environment Variables</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">SITEMAP_URL</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">javierayala</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sitemap</span><span class="o">.</span><span class="n">xml</span> <span class="n">python</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="usage-w-screenshot-option">
-<h3>Usage w/ Screenshot Option<a class="headerlink" href="#usage-w-screenshot-option" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt; python sitegloop.py -m screenshot -s https://www.javierayala.com/sitemap.xml
+<p><strong>Usage w/ Screenshot Option</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">python</span> <span class="n">sitegloop</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">m</span> <span class="n">screenshot</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">javierayala</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sitemap</span><span class="o">.</span><span class="n">xml</span>
 </pre></div>
-</div>
 </div>
 </div>
 <div class="section" id="api">
 <h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
-<p>See <a class="reference internal" href="API/index.html"><span class="doc">API</span></a></p>
+<p>See <a class="reference external" href="API/index.html">API</a>.</p>
 </div>
 </div>
 
 
-            <div class="clearer"></div>
           </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="install.html" title="Previous document">Installation</a>
+        </li>
+        <li>
+          <a href="API/index.html" title="Next document">SiteGloop API</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -148,59 +156,91 @@
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/SiteGloop_25.png" alt="Logo"/>
             </a></p>
-<h3><a href="index.html">Table of Contents</a></h3>
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="API/index.html">SiteGloop API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sitegloop.html">sitegloop.py CLI module</a></li>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#cli">CLI</a></li>
+<li><a class="reference internal" href="#cli-examples">CLI Examples</a></li>
+<li><a class="reference internal" href="#api">API</a></li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="install.html"
-                        title="previous chapter">Installation</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="API/index.html"
-                        title="next chapter">SiteGloop API</a></p>
-<form class="search" action="search.html" method="get">
-  <input type="text" name="q"
-   placeholder="type to search" />
-  <input type="hidden" name="check_keywords" value="yes" />
-  <input type="hidden" name="area" value="default" />
-</form>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="API/index.html" title="next chapter">SiteGloop API</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+<div class="widget navlinks">
+  <h4>This Page</h4>
+  <ul class="this-page-menu">
+    <li><a href="_sources/usage.rst.txt"
+            rel="nofollow"
+            target="_blank">Source RST</a></li>
+    <li><a href="https://github.com/javiergayala/SiteGloop/blob/main/docsrc/usage.rst"
+            rel="nofollow"
+            target="_blank">Source</a></li>
+    <li><a href="https://github.com/javiergayala/SiteGloop/edit/main/docsrc/usage.rst"
+            rel="nofollow"
+            target="_blank">Edit</a></li>
+     <li><a href="https://github.com/javiergayala/SiteGloop/commits/main/docsrc/usage.rst"
+             rel="nofollow"
+             target="_blank">History</a></li>
+     <li><a href="https://github.com/javiergayala/SiteGloop/blame/main/docsrc/usage.rst"
+             rel="nofollow"
+             target="_blank">Annotate</a></li>
+  </ul>
+</div>
+<div class="widget srclinks">
+  <h3>Source</h3>
+  <h5><a href="https://github.com/javiergayala/SiteGloop">github.com/javiergayala/SiteGloop</a>
+      <!--
+      / <a href="https://github.com/javiergayala/SiteGloop/tree/main"
+                rel="nofollow"
+                target="_blank"
+                font="monospace">main</a> -->
+  </h5>
+  <ul>
+    <li><pre>git clone https://github.com/javiergayala/SiteGloop</pre></li>
+    <li><pre>git clone ssh://git@github.com/javiergayala/SiteGloop</pre></li>
+    <li><pre>git clone git://github.com/javiergayala/SiteGloop</pre></li>
+  </ul>
+</div>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-  <div class="related bottom">
-  <nav id="rellinks">
-    <ul>
-        <li>
-          &larr;
-          <a href="install.html" title="Previous document">Installation</a>
-        </li>
-        <li>
-          <a href="API/index.html" title="Next document">SiteGloop API</a>
-          &rarr;
-        </li>
-    </ul>
-  </nav>
-  <nav id="breadcrumbs">
-    <ul>
-      <li><a href="index.html">Home</a></li> 
-    </ul>
-  </nav>
-  </div>
-  <footer id="pagefooter">&copy; 2020, Javier Ayala.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a>
-      3.3.0
-        with the <a href="http://github.com/irskep/sphinx-better-theme">
-          better</a> theme.
+    <div class="footer">
+      &copy;2020, Javier Ayala.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
 
-  </footer>
+    
+    <a href="https://github.com/javiergayala/SiteGloop" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
 
-  
+    
   </body>
 </html>

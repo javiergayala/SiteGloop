@@ -87,8 +87,8 @@ html_theme_options = {
 # }
 
 html_sidebars = {
-    "**": ["localtoc.html", "relations.html", "searchbox.html", "srclinks.html",],
-    "index": ["globaltoc.html", "relations.html", "searchbox.html", "srclinks.html",],
+    "**": ["localtoc.html", "relations.html", "searchbox.html", "srclinks.html"],
+    "index": ["globaltoc.html", "relations.html", "searchbox.html", "srclinks.html"],
 }
 
 # html_theme_options = {"inlinecss": "img.logo { width: 100%; }"}
