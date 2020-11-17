@@ -14,9 +14,8 @@ The site crawler with an insatiable appetite!
    :caption: Contents:
 
    install
-   usage
+   usage.rst
    API/index
-   sitegloop.py CLI module<sitegloop>
 
 
 
