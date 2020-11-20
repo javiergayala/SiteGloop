@@ -3,12 +3,13 @@ import asyncio
 import urllib.parse
 
 import aiohttp
+import progress
 from logzero import logger
 from progress.spinner import Spinner
 
+from SiteGloopErrors import InvalidHostname
 from SiteGloopUtils import SiteGloopLogger as GloopLog
 from SiteGloopUtils import is_fqdn
-from SiteGloopErrors import InvalidHostname
 
 
 class SiteCrawlerQuick:
@@ -80,7 +81,7 @@ class SiteCrawlerQuick:
         self.conn_limit = 100 if conn_limit is None else conn_limit
         self.results = None
         if self.verbosity >= 30:
-            self.glooplog.spinner = Spinner("\n Crawling ")
+            self.glooplog.spinner = None
 
     def change_url_location(self, urls=[]) -> list:
         """Change the netloc in the URL to something user-defined.
@@ -115,6 +116,7 @@ class SiteCrawlerQuick:
             )
             changed_urls[_new_url] = lastmod
             self.glooplog.logit(spin=True)
+        self.glooplog.spinner.finish()
         return changed_urls
 
     def get_urls(self) -> list:
@@ -126,23 +128,50 @@ class SiteCrawlerQuick:
         """
         return self.urls
 
-    async def request(self, url) -> dict:
+    async def request(self, url, session, spinner) -> dict:
         """Asynchronously request a URL from a web server.
 
         Args:
-            url (str): The URL to be requested by the crawler.
+            url (str): the URL to be requested by the crawler.
+            session (obj): an aiohttp Client Session
 
         Returns:
             dict: The URL as the key, and it's response code as the value from the crawler.
 
         """
-        connector = aiohttp.TCPConnector(limit=self.conn_limit)
-        async with aiohttp.ClientSession(connector=connector) as session:
+        try:
             async with session.get(url) as resp:
-                self.glooplog.logit(level="debug", msg="Starting session for %s" % url)
-                self.glooplog.logit(spin=True)
+                if self.verbosity < 30:
+                    self.glooplog.logit(
+                        level="debug", msg="Starting session for %s" % url
+                    )
+                else:
+                    spinner.next()
                 await resp.text(encoding="utf-8")
                 return {url: resp.status}
+        except aiohttp.ClientSSLError:
+            return {url: "Error: SSL Connection Error"}
+        except aiohttp.ClientResponseError as e:
+            return {url: "Error: %s Code Received" % e.status}
+        except aiohttp.TooManyRedirects:
+            return {url: "Error: Too Many Redirects"}
+        except aiohttp.ServerDisconnectedError:
+            return {url: "Error: Server Disconnected"}
+        except aiohttp.ServerTimeoutError:
+            return {url: "Error: Server Timeout"}
+        except aiohttp.InvalidURL:
+            return {url: "Error: Invalid URL"}
+
+    async def bound_request(self, sem, url, session, spinner):
+        """Bind the request to the semaphore pool.
+
+        Args:
+            sem (obj): a sempahore object to manage an internal counter for the connection limit
+            url (str): the URL to be requested by the crawler
+            session (obj): an aiohttp Client Session
+        """
+        async with sem:
+            return await self.request(url, session, spinner)
 
     async def crawl_sites(self) -> list:
         """Asynchronously crawl a list of URLs.
@@ -163,5 +192,19 @@ class SiteCrawlerQuick:
                 ]
 
         """
-        self.results = await asyncio.gather(*[self.request(u) for u in self.urls])
+        self.results = []
+        sem = asyncio.Semaphore(self.conn_limit)
+        crawlSpinner = Spinner()
+        print("Beginning Crawl...\n")
+        async with aiohttp.ClientSession() as session:
+            for url in self.urls:
+                self.results.append(
+                    asyncio.create_task(
+                        self.bound_request(sem, url, session, crawlSpinner)
+                    )
+                )
+            await asyncio.gather(*self.results)
+        if isinstance(self.glooplog.spinner, progress.spinner.Spinner):
+            self.glooplog.spinner.finish()
+        crawlSpinner.finish()
         return self.results

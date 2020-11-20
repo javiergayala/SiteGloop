@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SiteCrawlerQuick module &#8212; SiteGloop v0.2.3 documentation</title>
+    <title>SiteCrawlerQuick module &#8212; SiteGloop v0.2.4 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -129,6 +129,21 @@ the sitemap.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="SiteCrawlerQuick.SiteCrawlerQuick.bound_request">
+<em class="property">async </em><code class="sig-name descname">bound_request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sem</span></em>, <em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">spinner</span></em><span class="sig-paren">)</span><a class="headerlink" href="#SiteCrawlerQuick.SiteCrawlerQuick.bound_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bind the request to the semaphore pool.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sem</strong> (<em>obj</em>) – a sempahore object to manage an internal counter for the connection limit</p></li>
+<li><p><strong>url</strong> (<em>str</em>) – the URL to be requested by the crawler</p></li>
+<li><p><strong>session</strong> (<em>obj</em>) – an aiohttp Client Session</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="SiteCrawlerQuick.SiteCrawlerQuick.change_url_location">
 <code class="sig-name descname">change_url_location</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">urls</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span> &#x2192; list<a class="headerlink" href="#SiteCrawlerQuick.SiteCrawlerQuick.change_url_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the netloc in the URL to something user-defined.</p>
@@ -186,11 +201,14 @@ the sitemap.</p>
 
 <dl class="py method">
 <dt id="SiteCrawlerQuick.SiteCrawlerQuick.request">
-<em class="property">async </em><code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#SiteCrawlerQuick.SiteCrawlerQuick.request" title="Permalink to this definition">¶</a></dt>
+<em class="property">async </em><code class="sig-name descname">request</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em>, <em class="sig-param"><span class="n">session</span></em>, <em class="sig-param"><span class="n">spinner</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="headerlink" href="#SiteCrawlerQuick.SiteCrawlerQuick.request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asynchronously request a URL from a web server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – The URL to be requested by the crawler.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>url</strong> (<em>str</em>) – the URL to be requested by the crawler.</p></li>
+<li><p><strong>session</strong> (<em>obj</em>) – an aiohttp Client Session</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The URL as the key, and it’s response code as the value from the crawler.</p>
