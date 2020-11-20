@@ -147,12 +147,13 @@ def main(args):
             "\n\n%s%s%s Results of Site Crawl: %s\n"
             % (attr("bold"), fg("white"), bg("green"), attr("reset"))
         )
-        for result in site_crawler.results:
-            for url, status in result.items():
-                if int(status) < 300:
-                    status_color = fg("green")
-                elif int(status) < 400:
-                    status_color = fg("yellow")
+        for crawlres in site_crawler.results:
+            for url, status in crawlres.result().items():
+                if isinstance(status, int) and status < 400:
+                    if int(status) < 300:
+                        status_color = fg("green")
+                    elif int(status) < 400:
+                        status_color = fg("yellow")
                 else:
                     status_color = "%s%s" % (attr("bold"), fg("red"))
                 print("%s : %s%s%s" % (url, status_color, status, attr("reset")))
