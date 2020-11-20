@@ -126,23 +126,33 @@ class SiteCrawlerQuick:
         """
         return self.urls
 
-    async def request(self, url) -> dict:
+    async def request(self, url, session) -> dict:
         """Asynchronously request a URL from a web server.
 
         Args:
-            url (str): The URL to be requested by the crawler.
+            url (str): the URL to be requested by the crawler.
+            session (obj): an aiohttp Client Session
 
         Returns:
             dict: The URL as the key, and it's response code as the value from the crawler.
 
         """
-        connector = aiohttp.TCPConnector(limit=self.conn_limit)
-        async with aiohttp.ClientSession(connector=connector) as session:
-            async with session.get(url) as resp:
-                self.glooplog.logit(level="debug", msg="Starting session for %s" % url)
-                self.glooplog.logit(spin=True)
-                await resp.text(encoding="utf-8")
-                return {url: resp.status}
+        async with session.get(url) as resp:
+            self.glooplog.logit(level="debug", msg="Starting session for %s" % url)
+            self.glooplog.logit(spin=True)
+            await resp.text(encoding="utf-8")
+            return {url: resp.status}
+
+    async def bound_request(self, sem, url, session):
+        """Bind the request to the semaphore pool.
+
+        Args:
+            sem (obj): a sempahore object to manage an internal counter for the connection limit
+            url (str): the URL to be requested by the crawler
+            session (obj): an aiohttp Client Session
+        """
+        async with sem:
+            await self.request(url, session)
 
     async def crawl_sites(self) -> list:
         """Asynchronously crawl a list of URLs.
@@ -163,5 +173,12 @@ class SiteCrawlerQuick:
                 ]
 
         """
-        self.results = await asyncio.gather(*[self.request(u) for u in self.urls])
+        self.results = []
+        sem = asyncio.Semaphore(self.conn_limit)
+        async with aiohttp.ClientSession() as session:
+            for url in self.urls:
+                self.results.append(
+                    asyncio.create_task(self.bound_request(sem, url, session))
+                )
+            await asyncio.gather(*self.results)
         return self.results
